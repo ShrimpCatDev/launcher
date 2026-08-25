@@ -24,10 +24,13 @@ function love.load()
 
     print(ui:getPercentage(8))
 
-    uiCanvas=lg.newCanvas(ui.width,ui.height)
+    uiCanvas=lg.newCanvas(ui.w,ui.h)
 
-    control=ui.control(0,0,256,64)
-    control:child(ui.panel(0,0,256,64))
+    control=ui.control(0,0,ui.w,ui.h)
+    panel=ui.panel(0,0,256,64,control,{
+        align={x="center",y="bottom"},
+        margin={bottom=10,top=0,left=0,right=0}
+    })
 end
 
 function love.update()
