@@ -1,10 +1,7 @@
 lg=love.graphics
 
 function love.load()
-    moonshine=require("lib/moonshine")
-    effect={
-        blur=moonshine(moonshine.effects.boxblur)
-    }
+    object=require("lib/classic")
 
     icons={
         home=lg.newImage("assets/icons/home.png"),
@@ -28,6 +25,9 @@ function love.load()
     print(ui:getPercentage(8))
 
     uiCanvas=lg.newCanvas(ui.width,ui.height)
+
+    control=ui.control(0,0,256,64)
+    control:child(ui.panel(0,0,256,64,nil,control))
 end
 
 function love.update()
@@ -41,10 +41,13 @@ function love.draw()
         local h,v=ui:getPercentage(25)
         drawPanel(theme,74,12,227,50)
         for i=0,#dispIcons-1 do
-            lg.draw(dispIcons[i+1],(i*35)+74+14,23)
+            lg.setColor(0.1,0.5,1)
+            lg.rectangle("fill",(i*35)+74+14,0,dispIcons[i+1]:getWidth(),dispIcons[i+1]:getHeight())
+            lg.draw(dispIcons[i+1],(i*35)+74+14,0)
         end
         drawPanel(theme,504,12,196,50)
         --lg.draw(bg)
+        control:draw()
     lg.setCanvas()
 
     lg.setShader()
