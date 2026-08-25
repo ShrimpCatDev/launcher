@@ -27,7 +27,7 @@ function love.load()
     uiCanvas=lg.newCanvas(ui.width,ui.height)
 
     control=ui.control(0,0,256,64)
-    control:child(ui.panel(0,0,256,64,nil,control))
+    control:child(ui.panel(0,0,256,64))
 end
 
 function love.update()
@@ -37,7 +37,7 @@ end
 function love.draw()
     lg.clear(color(theme.background.color))
     lg.setCanvas(uiCanvas)
-        lg.clear(color(theme.background.color,0))
+        --[[lg.clear(color(theme.background.color,0))
         local h,v=ui:getPercentage(25)
         drawPanel(theme,74,12,227,50)
         for i=0,#dispIcons-1 do
@@ -45,7 +45,7 @@ function love.draw()
             lg.rectangle("fill",(i*35)+74+14,0,dispIcons[i+1]:getWidth(),dispIcons[i+1]:getHeight())
             lg.draw(dispIcons[i+1],(i*35)+74+14,0)
         end
-        drawPanel(theme,504,12,196,50)
+        drawPanel(theme,504,12,196,50)]]
         --lg.draw(bg)
         control:draw()
     lg.setCanvas()

@@ -14,7 +14,7 @@ end
 
 ui.control=object:extend()
 
-function ui.control:new(x,y,w,h,data,parent)
+function ui.control:new(x,y,w,h,parent,data)
     self.x=x or 0
     self.y=y or 0
     self.w=w or 0
@@ -25,26 +25,35 @@ function ui.control:new(x,y,w,h,data,parent)
 
     self.data=data or {}
 
-    self.align=data.align or {x="left",y="top"}
-    self.margin=data.margin or {top=0,bottom=0,left=0,right=0}
-    self.padding=data.padding or {top=0,bottom=0,left=0,right=0}
+    self.align=self.data.align or {x="left",y="top"}
+    self.margin=self.data.margin or {top=0,bottom=0,left=0,right=0}
+    self.padding=self.data.padding or {top=0,bottom=0,left=0,right=0}
+end
 
-    self.child=function(self,child)
-        table.insert(self.children,child)
-    end
+function ui.control:updateLayout()
+
+end
+
+function ui.control:child(child)
+    child.parent=self
+    table.insert(self.children,child)
+
+    self:updateLayout()
 end
 
 function ui.control:draw()
-    lg.rectangle("fill",0,600,64,64)
+    lg.push()
+    lg.translate(self.x,self.y)
     for k,v in pairs(self.children) do
         v:draw()
     end
+    lg.pop()
 end
 
 ui.panel=ui.control:extend()
 
-function ui.panel:new(...)
-    ui.panel.super.new(...)
+function ui.panel:new(x,y,w,h,parent,data)
+    ui.panel.super.new(self,x,y,w,h,parent,data)
 end
 
 function ui.panel:draw()
