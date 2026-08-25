@@ -6,6 +6,17 @@ function love.load()
         blur=moonshine(moonshine.effects.boxblur)
     }
 
+    icons={
+        home=lg.newImage("assets/icons/home.png"),
+        music=lg.newImage("assets/icons/music.png"),
+        social=lg.newImage("assets/icons/social.png"),
+        media=lg.newImage("assets/icons/media.png"),
+        ra=lg.newImage("assets/icons/ra.png"),
+        settings=lg.newImage("assets/icons/settings.png"),
+    }
+
+    dispIcons={icons.home,icons.music,icons.social,icons.media,icons.ra,icons.settings}
+
     bg=lg.newImage("Home.png")
     color=require("lib.hex2color")
     theme=require("themes.default")
@@ -28,7 +39,11 @@ function love.draw()
     lg.setCanvas(uiCanvas)
         lg.clear(color(theme.background.color,0))
         local h,v=ui:getPercentage(25)
-        drawPanel(theme,16,16,128,64)
+        drawPanel(theme,74,12,227,50)
+        for i=0,#dispIcons-1 do
+            lg.draw(dispIcons[i+1],(i*35)+74+14,23)
+        end
+        drawPanel(theme,504,12,196,50)
         --lg.draw(bg)
     lg.setCanvas()
 
