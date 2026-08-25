@@ -16,7 +16,14 @@ function drawPanel(theme,x,y,w,h)
             lg.rectangle("fill",(x+theme.panel.shadow.offsetX)-i/2,(y+theme.panel.shadow.offsetY)-i/2,w+i,h+i,rad,rad)
         end
     end
-    lg.setColor(color(theme.panel.fill))
+    lg.setColor(color(theme.panel.fill.color,theme.panel.fill.opacity))
         rect("fill",x,y,w,h,rad,rad)
+    if theme.panel.outline then
+        lg.setColor(color(theme.panel.outline.color,theme.panel.outline.opacity))
+        local t=lg.getLineWidth()
+        lg.setLineWidth(theme.panel.outline.thickness)
+        rect("line",x,y,w,h,rad,rad)
+        lg.setLineWidth(t)
+    end
     lg.setColor(1,1,1,1)
 end

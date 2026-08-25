@@ -4,7 +4,18 @@ return {
     },
     panel={
         radius=100,
-        fill="#ffffff",
+
+        fill={
+            color="#ffffff",
+            opacity=1
+        },
+
+
+        outline={
+            thickness=2,
+            color="#6fbaf7",
+            opacity=1
+        },
 
         font={
             color="#7A7287"

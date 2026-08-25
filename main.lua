@@ -1,6 +1,7 @@
 lg=love.graphics
 
 function love.load()
+    deep=require("lib/deep")
     object=require("lib/classic")
 
     icons={
@@ -27,10 +28,20 @@ function love.load()
     uiCanvas=lg.newCanvas(ui.w,ui.h)
 
     control=ui.control(0,0,ui.w,ui.h)
-    panel=ui.panel(0,0,256,64,control,{
+    ui.panel(0,0,256,64,control,{
         align={x="center",y="bottom"},
         margin={bottom=10,top=0,left=0,right=0}
     })
+    panel=ui.panel(0,0,227,50,control,{
+        align={x="left",y="top"},
+        margin={bottom=10,top=12,left=74,right=10}
+    })
+    for k,v in pairs(dispIcons) do
+        test=ui.image(0,0,v,panel,{
+            align={x="left",y="center"},
+            margin={bottom=4,top=4,left=15,right=4}
+        })
+    end
 end
 
 function love.update()
@@ -39,7 +50,7 @@ end
 
 function love.draw()
     lg.clear(color(theme.background.color))
-    lg.setCanvas(uiCanvas)
+    --lg.setCanvas(uiCanvas)
         --[[lg.clear(color(theme.background.color,0))
         local h,v=ui:getPercentage(25)
         drawPanel(theme,74,12,227,50)
@@ -51,11 +62,11 @@ function love.draw()
         drawPanel(theme,504,12,196,50)]]
         --lg.draw(bg)
         control:draw()
-    lg.setCanvas()
+    --lg.setCanvas()
 
     lg.setShader()
     lg.setColor(1,1,1,1)
-    lg.draw(uiCanvas,0,0)
+    --lg.draw(uiCanvas,0,0)
 
     
 end

@@ -37,6 +37,17 @@ end
 
 function ui.control:updateLayout()
     local w,h=love.graphics.getDimensions()
+
+    if self.parent then 
+        w=self.parent.w
+        h=self.parent.h 
+    end
+
+    --[[local offset=0
+    if #self.parent.children>0 then
+        
+    end]]
+
     if self.align.x=="left" then
         self.x=self.margin.left
     elseif self.align.x=="right" then
@@ -82,10 +93,22 @@ function ui.panel:new(x,y,w,h,parent,data)
 end
 
 function ui.panel:draw()
-    lg.rectangle("fill",0,600,64,64)
-    self.super.draw(self)
-
     drawPanel(theme,self.x,self.y,self.w,self.h)
+    self.super.draw(self)
+end
+
+ui.image=ui.control:extend()
+
+function ui.image:new(x,y,image,parent,data)
+    ui.panel.super.new(self,x,y,image:getWidth(),image:getHeight(),parent,data)
+    self.image=image
+end
+
+function ui.image:draw()
+    lg.rectangle("fill",0,600,64,64)
+    
+    lg.draw(self.image,self.x,self.y)
+    self.super.draw(self)
 end
 
 return ui
