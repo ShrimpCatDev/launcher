@@ -157,4 +157,16 @@ function ui.text:draw()
     self.super.draw(self)
 end
 
+ui.custom=ui.control:extend()
+
+function ui.custom:new(x,y,w,h,drawFunction,parent,data)
+    ui.panel.super.new(self,x,y,w,h,parent,data)
+    self.drawFunc=drawFunction or function() end
+end
+
+function ui.custom:draw()
+    self:drawFunc()
+    self.super.draw(self)
+end
+
 return ui

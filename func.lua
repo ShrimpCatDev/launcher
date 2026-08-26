@@ -1,14 +1,6 @@
-function rect(type,x,y,w,h,rx,ry)
-    if type=="fill" then
-        lg.rectangle("fill",x,y,w,h,rx,ry)
-    end
-    lg.rectangle("line",x,y,w,h,rx,ry)
-end
-
 function lerp(a,b,t)
     return a+(b-a)*t
 end
-
 
 function easeinquad(t)
 	return t*t
@@ -42,12 +34,12 @@ function drawPanel(theme,x,y,w,h)
     end
 
     lg.setColor(color(theme.panel.fill.color,theme.panel.fill.opacity))
-        rect("fill",x,y,w,h,rad,rad)
+        lg.rectangle("fill",x,y,w,h,rad,rad)
     if theme.panel.outline then
         lg.setColor(color(theme.panel.outline.color,theme.panel.outline.opacity))
         local t=lg.getLineWidth()
         lg.setLineWidth(theme.panel.outline.thickness)
-        rect("line",x,y,w,h,rad,rad)
+        lg.rectangle("line",x,y,w,h,rad,rad)
         lg.setLineWidth(t)
     end
     lg.setColor(1,1,1,1)

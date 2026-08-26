@@ -23,12 +23,12 @@ return {
             regular=lg.newFont("assets/fonts/contb.ttf",16)
         },
 
-        shadow={
+        --[[shadow={
             color="#000000",
             offsetX=0,
             offsetY=3,
             opacity=0.8,
             radius=10
-        }
+        }]]
     }
 }
