@@ -7,6 +7,10 @@ end
 
 function drawPanel(theme,x,y,w,h)
     local rad=(h*(theme.panel.radius/100))*0.5
+    if h>w then
+        rad=(w*(theme.panel.radius/100))*0.5
+    end
+    
     if theme.panel.shadow then
         local a=0
         local ca=theme.panel.shadow.opacity/theme.panel.shadow.radius/2

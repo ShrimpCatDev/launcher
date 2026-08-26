@@ -55,6 +55,17 @@ function ui.control:updateLayout()
             currentX=currentX+child.w+child.margin.left+child.margin.right+add
         end
         self.w=currentX+self.padding.right
+    elseif self.layout.mode=="vertical" and #self.children>0 then
+        local currentY=self.padding.top
+
+        for _,child in ipairs(self.children) do
+            child.y=currentY+child.margin.top
+            --child.y=self.padding.top+child.margin.top
+            local add=0
+            if _<#self.children then add=self.layout.spacing end
+            currentY=currentY+child.h+child.margin.top+child.margin.bottom+add
+        end
+        self.h=currentY+self.padding.bottom
     end
 
     --local pl,pr,pu,pd=0,0,0,0
