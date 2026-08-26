@@ -35,6 +35,7 @@ function ui.control:new(x,y,w,h,parent,data)
         self.parent:child(self)
     end
 
+    if self.data.init then self.data.init(self) end
 end
 
 function ui.control:updateLayout()

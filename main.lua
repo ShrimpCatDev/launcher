@@ -1,5 +1,9 @@
 lg=love.graphics
 
+function pixel(targetSize,currentSize)
+    return targetSize/currentSize
+end
+
 function love.load()
     debug=false
     deep=require("lib/deep")
@@ -54,12 +58,24 @@ function love.load()
         layout={mode="horizontal",spacing=12}
     }) 
 
-    ui.custom(0,0,50,50,function(self)
+    profile=ui.custom(0,0,50,50,function(self)
         lg.setColor(color(theme.panel.fill.color))
-        lg.circle("fill",self.x+self.w/2,self.y+self.h/2,self.w/2)
-        --lg.circle("line",self.x+self.w/2,self.y+self.h/2,self.w/2)
+
+        lg.stencil(function()
+            lg.circle("fill",self.x+self.w/2,self.y+self.h/2,self.w/2)
+        end,"replace",1)
+
+        local s=pixel(self.h,self.profileData.image:getHeight())
+
+        lg.setStencilTest("greater", 0)
+            lg.draw(self.profileData.image,self.x,self.y,0,s,s)
+        lg.setStencilTest()
+
         lg.setColor(1,1,1,1)
-    end,left)
+    end,left,
+    {init=function(self)
+        self.profileData=require("user")
+    end})
 
     panel2=ui.panel(0,0,300,50,control,{
             align={x="right",y="top"},
@@ -96,7 +112,7 @@ function love.load()
         align={x="center",y="center"},
         margin={bottom=100,top=0,left=0,right=0},
         padding={bottom=0,top=0,left=24,right=24},
-        layout={mode="horizontal",spacing=0},
+        layout={mode="horizontal",spacing=12},
         highlight=theme.panel.fill.highlight
     })
 
@@ -106,6 +122,12 @@ function love.load()
         font=theme.font.h1
     })
 
+    ui.image(0,0,icons.ra,select,{
+        align={x="left",y="center"},
+        margin={bottom=0,top=0,left=0,right=0},
+        --class="icon"
+    })
+
     testCanvas=lg.newCanvas(200,200)
 end
 
@@ -113,9 +135,7 @@ function love.update(dt)
     time.text=os.date("%H:%M")
 end
 
-function pixel(targetSize,currentSize)
-    return targetSize/currentSize
-end
+
 
 function love.draw()
     lg.clear(color(theme.background.color))
