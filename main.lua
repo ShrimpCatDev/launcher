@@ -27,44 +27,67 @@ function love.load()
     uiCanvas=lg.newCanvas(ui.w,ui.h)
 
     control=ui.control(0,0,ui.w,ui.h)
-    panel=ui.panel(0,0,300,50,control,{
+
+    left=ui.control(0,0,400,50,control,{
         align={x="left",y="top"},
         margin={bottom=10,top=12,left=12,right=12},
+        padding={bottom=0,top=0,left=0,right=12},
+        layout={mode="horizontal",spacing=12}
+    })  
+
+    ui.image(0,0,icons.home,left,{
+        align={x="left",y="center"},
+        margin={bottom=0,top=0,left=0,right=0}
+    })
+
+
+    panel2=ui.panel(0,0,300,50,left,{
+            align={x="left",y="top"},
+            margin={bottom=0,top=0,left=0,right=0},
+            padding={bottom=0,top=0,left=0,right=0},
+            layout={mode="horizontal",spacing=12}
+    })
+
+    ui.text(0,0,"hello world Owo UwU So quirky i knowwww",panel2,{
+        align={x="left",y="center"},
+        margin={bottom=0,top=0,left=12,right=12}
+    })
+
+    panel=ui.panel(0,0,300,50,nil,{
+        align={x="left",y="top"},
+        margin={bottom=0,top=0,left=0,right=0},
         padding={bottom=0,top=0,left=12,right=12},
         layout={mode="horizontal",spacing=12}
     })
 
     for k,v in pairs(dispIcons) do
-        test=ui.image(0,0,v,panel,{
+        ui.image(0,0,v,panel,{
             align={x="left",y="center"},
             margin={bottom=0,top=0,left=0,right=0}
         })
     end
+
+    left:child(panel) 
 end
 
 function love.update()
 
 end
 
+function pixel(targetSize,currentSize)
+    return targetSize/currentSize
+end
+
 function love.draw()
     lg.clear(color(theme.background.color))
-    --lg.setCanvas(uiCanvas)
-        --[[lg.clear(color(theme.background.color,0))
-        local h,v=ui:getPercentage(25)
-        drawPanel(theme,74,12,227,50)
-        for i=0,#dispIcons-1 do
-            lg.setColor(0.1,0.5,1)
-            lg.rectangle("fill",(i*35)+74+14,0,dispIcons[i+1]:getWidth(),dispIcons[i+1]:getHeight())
-            lg.draw(dispIcons[i+1],(i*35)+74+14,0)
-        end
-        drawPanel(theme,504,12,196,50)]]
-        --lg.draw(bg)
-        control:draw()
-    --lg.setCanvas()
+    if theme.background.image then
+        local i=theme.background.image
+        local s=pixel(ui.h,i:getHeight())
+        lg.draw(i,ui.w/2,ui.h/2,0,s,s,i:getWidth()/2,i:getHeight()/2)
+    end
+
+    control:draw()
 
     lg.setShader()
     lg.setColor(1,1,1,1)
-    --lg.draw(uiCanvas,0,0)
-
-    
 end

@@ -5,21 +5,42 @@ function rect(type,x,y,w,h,rx,ry)
     lg.rectangle("line",x,y,w,h,rx,ry)
 end
 
+function lerp(a,b,t)
+    return a+(b-a)*t
+end
+
+
+function easeinquad(t)
+	return t*t
+end
+
 function drawPanel(theme,x,y,w,h)
     local rad=(h*(theme.panel.radius/100))*0.5
     if h>w then
         rad=(w*(theme.panel.radius/100))*0.5
     end
+
+    
     
     if theme.panel.shadow then
-        local a=0
-        local ca=theme.panel.shadow.opacity/theme.panel.shadow.radius/2
+        
+        local radius=theme.panel.shadow.radius
+        local opacity=theme.panel.shadow.opacity
 
-        for i=0,theme.panel.shadow.radius-1 do
-            lg.setColor(color(theme.panel.shadow.color,ca))
-            lg.rectangle("fill",(x+theme.panel.shadow.offsetX)-i/2,(y+theme.panel.shadow.offsetY)-i/2,w+i,h+i,rad,rad)
+        for i=theme.panel.shadow.radius-1,0,-1 do
+            local t=i/radius
+            local fall=(1-t)^2
+            local alpha=opacity*fall/radius
+            lg.setColor(color(theme.panel.shadow.color,alpha))
+            lg.rectangle("fill",
+            (x+theme.panel.shadow.offsetX)-i/2,
+            (y+theme.panel.shadow.offsetY)-i/2,
+            w+i,
+            h+i,
+            rad,rad)
         end
     end
+
     lg.setColor(color(theme.panel.fill.color,theme.panel.fill.opacity))
         rect("fill",x,y,w,h,rad,rad)
     if theme.panel.outline then

@@ -141,4 +141,19 @@ function ui.image:draw()
     self.super.draw(self)
 end
 
+ui.text=ui.control:extend()
+
+local font=lg.getFont()
+function ui.text:new(x,y,text,parent,data)
+    ui.text.super.new(self,x,y,font:getWidth(text),font:getHeight(),parent,data)
+    self.text=text
+end
+
+function ui.text:draw()
+    lg.setColor(color(theme.panel.font.color))
+    lg.print(self.text,self.x,self.y)
+    lg.setColor(1,1,1,1)
+    self.super.draw(self)
+end
+
 return ui

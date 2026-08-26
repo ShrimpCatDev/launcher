@@ -1,19 +1,20 @@
 return {
     background={
-        color="#e1e0e0"
+        color="#e1e0e0",
+        --image=lg.newImage("assets/water.jpg")
     },
     panel={
         radius=100,
 
         fill={
             color="#ffffff",
-            opacity=1
+            opacity=0
         },
 
 
         outline={
-            thickness=2,
-            color="#6fbaf7",
+            thickness=4,
+            color="#7A7287",
             opacity=1
         },
 
@@ -24,9 +25,9 @@ return {
         --[[shadow={
             color="#000000",
             offsetX=0,
-            offsetY=3.5,
+            offsetY=3,
             opacity=0.8,
-            radius=8
+            radius=10
         }]]
     }
 }
