@@ -5,7 +5,11 @@ return {
     },
 
     font={
-        color="#7A7287",
+        color={
+            default="#7A7287",
+            highlight="#ffffff"
+        },
+
 
         regular=lg.newFont("assets/fonts/contb.ttf",24)
     },

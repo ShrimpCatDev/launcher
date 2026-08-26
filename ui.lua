@@ -120,9 +120,7 @@ function ui.panel:new(x,y,w,h,parent,data)
         self.highlight=true
         self.highlightCanvas=lg.newCanvas(self.w,self.h)
         lg.setCanvas(self.highlightCanvas)
-            --lg.setShader(gradient)
             lg.rectangle("fill",0,0,self.w,self.h)
-            --lg.setShader()
         lg.setCanvas()
     end
 end
@@ -201,7 +199,12 @@ function ui.text:new(x,y,text,parent,data)
 end
 
 function ui.text:draw()
-    lg.setColor(color(theme.font.color))
+    if self.parent.highlight then
+        lg.setColor(color(theme.font.color.highlight))
+    else
+        lg.setColor(color(theme.font.color.default))
+    end
+    
     lg.print(self.text,self.x,self.y)
     lg.setColor(1,1,1,1)
     self.super.draw(self)
