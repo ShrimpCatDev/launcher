@@ -11,7 +11,8 @@ return {
         },
 
 
-        regular=lg.newFont("assets/fonts/contb.ttf",24)
+        regular=lg.newFont("assets/fonts/contb.ttf",24),
+        h1=lg.newFont("assets/fonts/contb.ttf",26)
     },
 
     panel={

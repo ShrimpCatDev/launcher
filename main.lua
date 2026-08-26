@@ -92,7 +92,8 @@ function love.load()
     })
     ui.text(0,0,"Pokemon Emerald Version",select,{
         align={x="center",y="center"},
-        margin={bottom=0,top=0,left=0,right=0}
+        margin={bottom=0,top=0,left=0,right=0},
+        font=theme.font.h1
     })
 
     testCanvas=lg.newCanvas(200,200)

@@ -193,21 +193,24 @@ ui.text=ui.control:extend()
 
 
 function ui.text:new(x,y,text,parent,data)
-    local font=lg.getFont()
-    ui.text.super.new(self,x,y,font:getWidth(text),font:getHeight(),parent,data)
+    self.font=data.font or theme.font.regular
+    ui.text.super.new(self,x,y,self.font:getWidth(text),self.font:getHeight(),parent,data)
     self.text=text
 end
 
 function ui.text:draw()
-    if self.parent.highlight then
-        lg.setColor(color(theme.font.color.highlight))
-    else
-        lg.setColor(color(theme.font.color.default))
-    end
-    
-    lg.print(self.text,self.x,self.y)
-    lg.setColor(1,1,1,1)
-    self.super.draw(self)
+    local font=lg.getFont()
+    lg.setFont(self.font)
+        if self.parent.highlight then
+            lg.setColor(color(theme.font.color.highlight))
+        else
+            lg.setColor(color(theme.font.color.default))
+        end
+        
+        lg.print(self.text,self.x,self.y)
+        lg.setColor(1,1,1,1)
+        self.super.draw(self)
+    lg.setFont(font)
 end
 
 ui.custom=ui.control:extend()
