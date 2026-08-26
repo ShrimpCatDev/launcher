@@ -143,8 +143,9 @@ end
 
 ui.text=ui.control:extend()
 
-local font=lg.getFont()
+
 function ui.text:new(x,y,text,parent,data)
+    local font=lg.getFont()
     ui.text.super.new(self,x,y,font:getWidth(text),font:getHeight(),parent,data)
     self.text=text
 end

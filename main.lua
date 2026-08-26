@@ -19,6 +19,7 @@ function love.load()
     bg=lg.newImage("Home.png")
     color=require("lib.hex2color")
     theme=require("themes.default")
+    lg.setFont(lg.newFont("assets/fonts/contb.ttf",24))
 
     require("func")
     ui=require("ui")
@@ -33,22 +34,16 @@ function love.load()
         margin={bottom=10,top=12,left=12,right=12},
         padding={bottom=0,top=0,left=0,right=12},
         layout={mode="horizontal",spacing=12}
-    })  
+    }) 
 
-    ui.image(0,0,icons.home,left,{
-        align={x="left",y="center"},
-        margin={bottom=0,top=0,left=0,right=0}
-    })
-
-
-    panel2=ui.panel(0,0,300,50,left,{
-            align={x="left",y="top"},
-            margin={bottom=0,top=0,left=0,right=0},
-            padding={bottom=0,top=0,left=0,right=0},
+    panel2=ui.panel(0,0,300,50,control,{
+            align={x="right",y="top"},
+            margin={bottom=0,top=12,left=0,right=12},
+            padding={bottom=0,top=0,left=12,right=12},
             layout={mode="horizontal",spacing=12}
     })
 
-    ui.text(0,0,"hello world Owo UwU So quirky i knowwww",panel2,{
+    time=ui.text(0,0,"00:00",panel2,{
         align={x="left",y="center"},
         margin={bottom=0,top=0,left=12,right=12}
     })
@@ -71,7 +66,7 @@ function love.load()
 end
 
 function love.update()
-
+    time.text=os.date("%H:%M")
 end
 
 function pixel(targetSize,currentSize)

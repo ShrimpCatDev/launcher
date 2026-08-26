@@ -8,26 +8,27 @@ return {
 
         fill={
             color="#ffffff",
-            opacity=0
-        },
-
-
-        outline={
-            thickness=4,
-            color="#7A7287",
             opacity=1
         },
 
+
+        --[[outline={
+            thickness=4,
+            color="#7A7287",
+            opacity=1
+        },]]
+
         font={
-            color="#7A7287"
+            color="#7A7287",
+            regular=lg.newFont("assets/fonts/contb.ttf",16)
         },
 
-        --[[shadow={
+        shadow={
             color="#000000",
             offsetX=0,
             offsetY=3,
             opacity=0.8,
             radius=10
-        }]]
+        }
     }
 }
