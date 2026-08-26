@@ -29,6 +29,8 @@ function ui.control:new(x,y,w,h,parent,data)
     self.margin=self.data.margin or {top=0,bottom=0,left=0,right=0}
     self.padding=self.data.padding or {top=0,bottom=0,left=0,right=0}
 
+    self.layout=self.data.layout or {mode="absolute",spacing=0}
+
     if self.parent then
         self.parent:child(self)
     end
@@ -38,15 +40,32 @@ end
 function ui.control:updateLayout()
     local w,h=love.graphics.getDimensions()
 
+    for _,child in pairs(self.children) do
+        child:updateLayout()
+    end
+
+    if self.layout.mode=="horizontal" and #self.children>0 then
+        local currentX=self.padding.left
+
+        for _,child in ipairs(self.children) do
+            child.x=currentX+child.margin.left
+            --child.y=self.padding.top+child.margin.top
+            local add=0
+            if _<#self.children then add=self.layout.spacing end
+            currentX=currentX+child.w+child.margin.left+child.margin.right+add
+        end
+        self.w=currentX+self.padding.right
+    end
+
+    --local pl,pr,pu,pd=0,0,0,0
     if self.parent then 
         w=self.parent.w
         h=self.parent.h 
+        --[[pl=self.parent.padding.left
+        pr=self.parent.padding.right
+        pu=self.parent.padding.up
+        pd=self.parent.padding.down]]
     end
-
-    --[[local offset=0
-    if #self.parent.children>0 then
-        
-    end]]
 
     if self.align.x=="left" then
         self.x=self.margin.left
@@ -62,10 +81,6 @@ function ui.control:updateLayout()
         self.y=h-self.h-self.margin.bottom
     elseif self.align.y=="center" then
         self.y=(h/2)-(self.h/2)-self.margin.bottom+self.margin.top
-    end
-
-    for _,child in pairs(self.children) do
-        child:updateLayout()
     end
 end
 
@@ -105,7 +120,11 @@ function ui.image:new(x,y,image,parent,data)
 end
 
 function ui.image:draw()
-    lg.rectangle("fill",0,600,64,64)
+    if debug then
+        lg.setColor(0,0,1,0.5)
+        lg.rectangle("fill",self.x,self.y,self.w,self.h)
+        lg.setColor(1,1,1,1)
+    end
     
     lg.draw(self.image,self.x,self.y)
     self.super.draw(self)

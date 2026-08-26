@@ -1,6 +1,7 @@
 lg=love.graphics
 
 function love.load()
+    debug=false
     deep=require("lib/deep")
     object=require("lib/classic")
 
@@ -23,23 +24,27 @@ function love.load()
     ui=require("ui")
     ui:init()
 
-    print(ui:getPercentage(8))
-
     uiCanvas=lg.newCanvas(ui.w,ui.h)
 
     control=ui.control(0,0,ui.w,ui.h)
-    ui.panel(0,0,256,64,control,{
-        align={x="center",y="bottom"},
-        margin={bottom=10,top=0,left=0,right=0}
-    })
-    panel=ui.panel(0,0,227,50,control,{
+    panel=ui.panel(0,0,300,50,control,{
         align={x="left",y="top"},
-        margin={bottom=10,top=12,left=74,right=10}
+        margin={bottom=10,top=12,left=12,right=12},
+        padding={bottom=0,top=0,left=12,right=12},
+        layout={mode="horizontal",spacing=12}
     })
+
+    ui.panel(0,0,300,50,control,{
+        align={x="right",y="top"},
+        margin={bottom=10,top=12,left=12,right=12},
+        padding={bottom=0,top=0,left=12,right=12},
+        layout={mode="horizontal",spacing=12}
+    })
+
     for k,v in pairs(dispIcons) do
         test=ui.image(0,0,v,panel,{
             align={x="left",y="center"},
-            margin={bottom=4,top=4,left=15,right=4}
+            margin={bottom=0,top=0,left=0,right=0}
         })
     end
 end
