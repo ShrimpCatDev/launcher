@@ -141,18 +141,29 @@ function ui.panel:draw()
                 lg.draw(self.highlightCanvas,self.x,self.y)
             lg.setStencilTest()
         lg.setShader()
+
+
+        if theme.panel.outline and theme.panel.outline.highlight then
+            lg.setColor(color(theme.panel.outline.highlight.color,theme.panel.outline.highlight.opacity))
+            local t=lg.getLineWidth()
+            lg.setLineWidth(theme.panel.outline.highlight.thickness)
+            lg.rectangle("line",self.x,self.y,self.w,self.h,rad,rad)
+            lg.setLineWidth(t)
+        end
     else
         lg.setColor(color(theme.panel.fill.color,theme.panel.fill.opacity))
         lg.rectangle("fill",self.x,self.y,self.w,self.h,rad,rad)
+
+        if theme.panel.outline then
+            lg.setColor(color(theme.panel.outline.color,theme.panel.outline.opacity))
+            local t=lg.getLineWidth()
+            lg.setLineWidth(theme.panel.outline.thickness)
+            lg.rectangle("line",self.x,self.y,self.w,self.h,rad,rad)
+            lg.setLineWidth(t)
+        end
     end
 
-    if theme.panel.outline then
-        lg.setColor(color(theme.panel.outline.color,theme.panel.outline.opacity))
-        local t=lg.getLineWidth()
-        lg.setLineWidth(theme.panel.outline.thickness)
-        lg.rectangle("line",self.x,self.y,self.w,self.h,rad,rad)
-        lg.setLineWidth(t)
-    end
+    
     lg.setColor(1,1,1,1)
 
     self.super.draw(self)
@@ -176,6 +187,7 @@ ui.image=ui.control:extend()
 function ui.image:new(x,y,image,parent,data)
     ui.panel.super.new(self,x,y,image:getWidth(),image:getHeight(),parent,data)
     self.image=image
+    self.class=data.class
 end
 
 function ui.image:draw()
@@ -185,6 +197,12 @@ function ui.image:draw()
         lg.setColor(1,1,1,1)
     end
     
+    if self.class and self.class=="icon" then
+        lg.setColor(color(theme.icons.overlayColor,theme.icons.opacity or 1))
+    else
+        lg.setColor(1,1,1,1)
+    end
+
     lg.draw(self.image,self.x,self.y)
     self.super.draw(self)
 end

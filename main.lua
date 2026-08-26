@@ -24,8 +24,16 @@ function love.load()
     lg.setFont(theme.font.regular)
 
     gradient=lg.newShader("shaders/gradient.frag")
-    gradient:send("colorA",color(theme.panel.fill.highlight.gradient[1]))
-    gradient:send("colorB",color(theme.panel.fill.highlight.gradient[2]))
+    if theme.panel.fill.highlight and theme.panel.fill.highlight.gradient then
+        gradient:send("colorA",color(theme.panel.fill.highlight.gradient[1]))
+        gradient:send("colorB",color(theme.panel.fill.highlight.gradient[2]))
+    elseif theme.panel.fill.highlight and theme.panel.fill.highlight.color then
+        gradient:send("colorA",color(theme.panel.fill.highlight.color))
+        gradient:send("colorB",color(theme.panel.fill.highlight.color))
+    else
+        gradient:send("colorA",color(theme.panel.fill.color))
+        gradient:send("colorB",color(theme.panel.fill.color))
+    end
 
     require("func")
     ui=require("ui")
@@ -47,7 +55,7 @@ function love.load()
     }) 
 
     ui.custom(0,0,50,50,function(self)
-        lg.setColor(0.1,0.5,1)
+        lg.setColor(color(theme.panel.fill.color))
         lg.circle("fill",self.x+self.w/2,self.y+self.h/2,self.w/2)
         --lg.circle("line",self.x+self.w/2,self.y+self.h/2,self.w/2)
         lg.setColor(1,1,1,1)
@@ -77,7 +85,8 @@ function love.load()
     for k,v in pairs(dispIcons) do
         ui.image(0,0,v,panel,{
             align={x="left",y="center"},
-            margin={bottom=0,top=0,left=0,right=0}
+            margin={bottom=0,top=0,left=0,right=0},
+            class="icon"
         })
     end
 
@@ -88,8 +97,9 @@ function love.load()
         margin={bottom=100,top=0,left=0,right=0},
         padding={bottom=0,top=0,left=24,right=24},
         layout={mode="horizontal",spacing=0},
-        highlight=true
+        highlight=theme.panel.fill.highlight
     })
+
     ui.text(0,0,"Pokemon Emerald Version",select,{
         align={x="center",y="center"},
         margin={bottom=0,top=0,left=0,right=0},
@@ -111,7 +121,8 @@ function love.draw()
     lg.clear(color(theme.background.color))
     if theme.background.image then
         local i=theme.background.image
-        local s=pixel(ui.h,i:getHeight())
+        local s=math.max(pixel(ui.h,i:getHeight()),pixel(ui.w,i:getWidth()))
+        
         lg.draw(i,ui.w/2,ui.h/2,0,s,s,i:getWidth()/2,i:getHeight()/2)
     end
 

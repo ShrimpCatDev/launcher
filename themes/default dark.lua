@@ -1,12 +1,12 @@
 return {
     background={
-        color="#e1e0e0",
+        color="#39343f",
         --image=lg.newImage("assets/aero.jpg")
     },
 
     font={
         color={
-            default="#7A7287",
+            default="#efeded",
             highlight="#ffffff"
         },
 
@@ -19,10 +19,10 @@ return {
         radius=100,
 
         fill={
-            color="#ffffff",
+            color="#1d1a22",
             opacity=1,
             highlight={
-                color="#4adce4",
+                color="#1d1a22",
                 gradient={
                     "#4adce4",
                     "#a373f0"
@@ -41,12 +41,10 @@ return {
                 opacity=0.5
             }
         }]]
-
-        
     },
 
     icons={
-        overlayColor="#7A7287",
+        overlayColor="#efeded",
         opacity=1
     }
 }

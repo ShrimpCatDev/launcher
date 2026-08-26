@@ -1,52 +1,52 @@
 return {
     background={
         color="#e1e0e0",
-        --image=lg.newImage("assets/aero.jpg")
+        image=lg.newImage("assets/aero.jpg")
     },
 
     font={
         color={
-            default="#7A7287",
+            default="#ffffff",
             highlight="#ffffff"
         },
 
 
-        regular=lg.newFont("assets/fonts/contb.ttf",24),
-        h1=lg.newFont("assets/fonts/contb.ttf",26)
+        regular=lg.newFont("assets/fonts/aero.ttf",24),
+        h1=lg.newFont("assets/fonts/aero.ttf",26)
     },
 
     panel={
         radius=100,
 
         fill={
-            color="#ffffff",
-            opacity=1,
-            highlight={
-                color="#4adce4",
+            color="#3ef37d",
+            opacity=0.5,
+            --[[highlight={
+                color="#7DE87E",
                 gradient={
                     "#4adce4",
                     "#a373f0"
                 }
-            }
+            }]]
         },
 
 
-        --[[outline={
-            thickness=4,
-            color="#7A7287",
-            opacity=1,
+        outline={
+            thickness=3,
+            color="#ffffff",
+            opacity=0.4,
             highlight={
                 thickness=2,
                 color="#ffffff",
                 opacity=0.5
             }
-        }]]
+        }
 
         
     },
 
     icons={
-        overlayColor="#7A7287",
+        overlayColor="#fbfbfb",
         opacity=1
     }
 }
