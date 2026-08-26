@@ -116,11 +116,61 @@ ui.panel=ui.control:extend()
 
 function ui.panel:new(x,y,w,h,parent,data)
     ui.panel.super.new(self,x,y,w,h,parent,data)
+    if data.highlight then
+        self.highlight=true
+        self.highlightCanvas=lg.newCanvas(self.w,self.h)
+        lg.setCanvas(self.highlightCanvas)
+            --lg.setShader(gradient)
+            lg.rectangle("fill",0,0,self.w,self.h)
+            --lg.setShader()
+        lg.setCanvas()
+    end
 end
 
 function ui.panel:draw()
-    drawPanel(theme,self.x,self.y,self.w,self.h)
+    local rad=(self.h*(theme.panel.radius/100))*0.5
+    if self.h>self.w then
+        rad=(self.w *(theme.panel.radius/100))*0.5
+    end
+
+    if self.highlight then
+        lg.setShader(gradient)
+            lg.stencil(function()
+                lg.rectangle("fill",self.x,self.y,self.w,self.h,rad,rad)
+            end,"replace",1)
+
+            lg.setStencilTest("greater", 0)
+                lg.draw(self.highlightCanvas,self.x,self.y)
+            lg.setStencilTest()
+        lg.setShader()
+    else
+        lg.setColor(color(theme.panel.fill.color,theme.panel.fill.opacity))
+        lg.rectangle("fill",self.x,self.y,self.w,self.h,rad,rad)
+    end
+
+    if theme.panel.outline then
+        lg.setColor(color(theme.panel.outline.color,theme.panel.outline.opacity))
+        local t=lg.getLineWidth()
+        lg.setLineWidth(theme.panel.outline.thickness)
+        lg.rectangle("line",self.x,self.y,self.w,self.h,rad,rad)
+        lg.setLineWidth(t)
+    end
+    lg.setColor(1,1,1,1)
+
     self.super.draw(self)
+end
+
+function ui.panel:updateLayout()
+    self.super.updateLayout(self)
+    if self.highlight then
+
+        self.highlightCanvas=lg.newCanvas(self.w,self.h)
+        lg.setCanvas(self.highlightCanvas)
+            --lg.setShader(gradient)
+            lg.rectangle("fill",0,0,self.w,self.h)
+            --lg.setShader()
+        lg.setCanvas()
+    end
 end
 
 ui.image=ui.control:extend()
@@ -151,7 +201,7 @@ function ui.text:new(x,y,text,parent,data)
 end
 
 function ui.text:draw()
-    lg.setColor(color(theme.panel.font.color))
+    lg.setColor(color(theme.font.color))
     lg.print(self.text,self.x,self.y)
     lg.setColor(1,1,1,1)
     self.super.draw(self)

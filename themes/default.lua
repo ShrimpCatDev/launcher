@@ -3,12 +3,25 @@ return {
         color="#e1e0e0",
         --image=lg.newImage("assets/water.jpg")
     },
+
+    font={
+        color="#7A7287",
+
+        regular=lg.newFont("assets/fonts/contb.ttf",24)
+    },
+
     panel={
         radius=100,
 
         fill={
             color="#ffffff",
-            opacity=1
+            opacity=1,
+            highlight={
+                gradient={
+                    "#5ED4F8",
+                    "#cb82ff"
+                }
+            }
         },
 
 
@@ -18,10 +31,7 @@ return {
             opacity=1
         },]]
 
-        font={
-            color="#7A7287",
-            regular=lg.newFont("assets/fonts/contb.ttf",16)
-        },
+        
 
         --[[shadow={
             color="#000000",

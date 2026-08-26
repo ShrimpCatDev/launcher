@@ -21,7 +21,11 @@ function love.load()
     bg=lg.newImage("Home.png")
     color=require("lib.hex2color")
     theme=require("themes.default")
-    lg.setFont(lg.newFont("assets/fonts/contb.ttf",24))
+    lg.setFont(theme.font.regular)
+
+    gradient=lg.newShader("shaders/gradient.frag")
+    gradient:send("colorA",color(theme.panel.fill.highlight.gradient[1]))
+    gradient:send("colorB",color(theme.panel.fill.highlight.gradient[2]))
 
     require("func")
     ui=require("ui")
@@ -83,13 +87,15 @@ function love.load()
         align={x="center",y="center"},
         margin={bottom=100,top=0,left=0,right=0},
         padding={bottom=0,top=0,left=24,right=24},
-        layout={mode="horizontal",spacing=0}
+        layout={mode="horizontal",spacing=0},
+        highlight=true
     })
     ui.text(0,0,"Pokemon Emerald Version",select,{
         align={x="center",y="center"},
         margin={bottom=0,top=0,left=0,right=0}
     })
 
+    testCanvas=lg.newCanvas(200,200)
 end
 
 function love.update(dt)
@@ -108,9 +114,13 @@ function love.draw()
         lg.draw(i,ui.w/2,ui.h/2,0,s,s,i:getWidth()/2,i:getHeight()/2)
     end
 
-    lg.setCanvas(uiCanvas)
-    lg.clear()
-    control:draw()
+    lg.setCanvas{testCanvas}
+        lg.rectangle("fill",0,0,200,200)
+    lg.setCanvas()
+
+    lg.setCanvas{uiCanvas,stencil=true}
+        lg.clear()
+        control:draw()
     lg.setCanvas()
 
     love.graphics.setBlendMode("alpha", "premultiplied")
@@ -122,4 +132,6 @@ function love.draw()
 
     lg.setShader()
     lg.setColor(1,1,1,1)
+    
+    
 end
