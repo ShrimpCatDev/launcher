@@ -8,10 +8,8 @@ function ui:getPercentage(percent)
     return self.w*(percent/100),self.h*(percent/100)
 end
 
-function ui:drawElement(data)
 
-end
-
+--main ui control
 ui.control=object:extend()
 
 function ui.control:new(x,y,w,h,parent,data)
@@ -69,14 +67,9 @@ function ui.control:updateLayout()
         self.h=currentY+self.padding.bottom
     end
 
-    --local pl,pr,pu,pd=0,0,0,0
     if self.parent then 
         w=self.parent.w
         h=self.parent.h 
-        --[[pl=self.parent.padding.left
-        pr=self.parent.padding.right
-        pu=self.parent.padding.up
-        pd=self.parent.padding.down]]
     end
 
     if self.align.x=="left" then
@@ -113,6 +106,7 @@ function ui.control:draw()
     lg.pop()
 end
 
+--panel system
 ui.panel=ui.control:extend()
 
 function ui.panel:new(x,y,w,h,parent,data)
@@ -183,6 +177,8 @@ function ui.panel:updateLayout()
     end
 end
 
+
+--image system
 ui.image=ui.control:extend()
 
 function ui.image:new(x,y,image,parent,data)
@@ -208,8 +204,8 @@ function ui.image:draw()
     self.super.draw(self)
 end
 
+--text system
 ui.text=ui.control:extend()
-
 
 function ui.text:new(x,y,text,parent,data)
     self.font=data.font or theme.font.regular
@@ -232,6 +228,7 @@ function ui.text:draw()
     lg.setFont(font)
 end
 
+--custom system
 ui.custom=ui.control:extend()
 
 function ui.custom:new(x,y,w,h,drawFunction,parent,data)
