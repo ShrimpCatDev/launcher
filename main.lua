@@ -8,6 +8,7 @@ function love.load()
     config=require("config")
     debug=config.debug
     object=require("lib/classic")
+    require("input")
 
     icons={
         home=lg.newImage("assets/icons/home.png"),
@@ -19,8 +20,6 @@ function love.load()
     }
 
     dispIcons={icons.home,icons.music,icons.social,icons.media,icons.ra,icons.settings}
-
-    bg=lg.newImage("Home.png")
     color=require("lib.hex2color")
 
     gradient=lg.newShader("shaders/gradient.frag")
@@ -72,6 +71,7 @@ function love.load()
 end
 
 function love.update(dt)
+    input:update()
     for k,v in pairs(ui.elements) do
         v:update(dt)
     end
