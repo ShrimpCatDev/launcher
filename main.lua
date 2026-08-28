@@ -8,8 +8,6 @@ function love.load()
     debug=false
     deep=require("lib/deep")
     object=require("lib/classic")
-    moonshine=require("lib/moonshine")
-    blur=moonshine(moonshine.effects.boxblur)
 
     icons={
         home=lg.newImage("assets/icons/home.png"),
@@ -51,109 +49,16 @@ function love.load()
 
     control=ui.control(0,0,ui.w,ui.h)
 
-    left=ui.control(0,0,400,50,control,{
-        align={x="left",y="top"},
-        margin={bottom=10,top=12,left=12,right=12},
-        padding={bottom=0,top=0,left=0,right=12},
-        layout={mode="horizontal",spacing=12}
-    }) 
-
-    profile=ui.custom(0,0,50,50,function(self)
-        lg.setColor(color(theme.panel.fill.color))
-
-        lg.stencil(function()
-            lg.circle("fill",self.x+self.w/2,self.y+self.h/2,self.w/2)
-        end,"replace",1)
-
-        local s=pixel(self.h,self.profileData.image:getHeight())
-
-        lg.setStencilTest("greater", 0)
-            lg.draw(self.profileData.image,self.x,self.y,0,s,s)
-        lg.setStencilTest()
-
-        lg.setColor(1,1,1,1)
-    end,left,
-    {init=function(self)
-        self.profileData=require("user")
-    end})
-
-    panel2=ui.panel(0,0,300,50,control,{
-            align={x="right",y="top"},
-            margin={bottom=0,top=12,left=0,right=12},
-            padding={bottom=0,top=0,left=12,right=12},
-            layout={mode="horizontal",spacing=12}
-    })
-
-    --ui.control(0,0,80,5,panel2)
-
-    time=ui.text(0,0,"00:00",panel2,{
-        align={x="left",y="center"},
-        margin={bottom=0,top=0,left=12,right=12}
-    })
-
-    panel=ui.panel(0,0,300,50,nil,{
-        align={x="left",y="top"},
-        margin={bottom=0,top=0,left=0,right=0},
-        padding={bottom=0,top=0,left=12,right=12},
-        layout={mode="horizontal",spacing=12}
-    })
-
-    for k,v in pairs(dispIcons) do
-        ui.image(0,0,v,panel,{
-            align={x="left",y="center"},
-            margin={bottom=0,top=0,left=0,right=0},
-            class="icon"
-        })
-    end
-
-    left:child(panel) 
-
-    select=ui.panel(0,0,300,60,control,{
-        align={x="center",y="center"},
-        margin={bottom=100,top=0,left=0,right=0},
-        padding={bottom=0,top=0,left=24,right=24},
-        layout={mode="horizontal",spacing=12},
-        highlight=theme.panel.fill.highlight
-    })
-
-    ui.text(0,0,"Pokemon Emerald Version",select,{
-        align={x="center",y="center"},
-        margin={bottom=0,top=0,left=0,right=0},
-        font=theme.font.h1
-    })
-
-    ui.image(0,0,icons.ra,select,{
-        align={x="left",y="center"},
-        margin={bottom=0,top=0,left=0,right=0},
-        --class="icon"
-    })
-
-
-    ui.custom(0,0,ui.w,200,function(self)
-            --lg.rectangle("fill",self.x,self.y,self.w,self.h)
-            local s=128
-            local sb=192
-            local selected=0
-
-            for i=0,3 do
-                if i==selected then
-                    lg.rectangle("fill",i*(s+self.layout.spacing)+(self.w/2-sb/2),self.y+self.h-sb,sb,sb,10,10)
-                else
-                    lg.rectangle("fill",i*(s+self.layout.spacing)+(self.w/2-s/2),self.y+self.h-s,s,s,10,10)
-                end
-            end
-        end,control,{
-        align={x="center",y="bottom"},
-        margin={bottom=64,top=0,left=0,right=0},
-        padding={bottom=0,top=0,left=12,right=12},
-        layout={mode="horizontal",spacing=64}
-    })
+    ui.elements={
+        stats=require("ui/stats"):init(control),
+        home=require("ui/home"):init(control)
+    }
 
     testCanvas=lg.newCanvas(200,200)
 end
 
 function love.update(dt)
-    time.text=os.date("%H:%M")
+    ui.elements.stats:update(dt)
 end
 
 
