@@ -6,7 +6,6 @@ end
 
 function love.load()
     debug=false
-    deep=require("lib/deep")
     object=require("lib/classic")
 
     icons={
@@ -53,18 +52,17 @@ function love.load()
         stats=require("ui/stats"):init(control),
         home=require("ui/home"):init(control)
     }
-
-    testCanvas=lg.newCanvas(200,200)
 end
 
 function love.update(dt)
-    ui.elements.stats:update(dt)
+    for k,v in pairs(ui.elements) do
+        v:update(dt)
+    end
 end
-
-
 
 function love.draw()
     lg.clear(color(theme.background.color))
+
     if theme.background.image then
         local i=theme.background.image
         local s=math.max(pixel(ui.h,i:getHeight()),pixel(ui.w,i:getWidth()))
@@ -72,24 +70,17 @@ function love.draw()
         lg.draw(i,ui.w/2,ui.h/2,0,s,s,i:getWidth()/2,i:getHeight()/2)
     end
 
-    lg.setCanvas{testCanvas}
-        lg.rectangle("fill",0,0,200,200)
-    lg.setCanvas()
-
     lg.setCanvas{uiCanvas,stencil=true}
         lg.clear()
         control:draw()
     lg.setCanvas()
 
     love.graphics.setBlendMode("alpha", "premultiplied")
-    lg.setColor(0,0,0,0.1)
-    love.graphics.draw(uiCanvas,2,4)
-    lg.setColor(1,1,1,1)
-    love.graphics.draw(uiCanvas)
+        lg.setColor(0,0,0,0.1)
+            love.graphics.draw(uiCanvas,2,4)
+        lg.setColor(1,1,1,1)
+            love.graphics.draw(uiCanvas)
     love.graphics.setBlendMode("alpha")
 
-    lg.setShader()
     lg.setColor(1,1,1,1)
-    
-    
 end

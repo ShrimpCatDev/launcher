@@ -68,6 +68,7 @@ end
 
 function stats:update(dt)
     self.clock.text=os.date("%H:%M")
+    
 end
 
 
