@@ -5,7 +5,8 @@ function pixel(targetSize,currentSize)
 end
 
 function love.load()
-    debug=false
+    config=require("config")
+    debug=config.debug
     object=require("lib/classic")
 
     icons={
@@ -21,10 +22,36 @@ function love.load()
 
     bg=lg.newImage("Home.png")
     color=require("lib.hex2color")
+
+    gradient=lg.newShader("shaders/gradient.frag")
+
+    require("func")
+    ui=require("ui")
+    ui:init()
+
+    local cw,ch=ui.w,ui.h
+
+    if config.changeAspect then
+        local sw,sh=love.window.getDesktopDimensions()
+        print(sw)
+        local ar=sw/sh
+        local vw=math.floor(ui.h*ar)
+        ui.w=vw
+        cw,ch=sw,sh
+    end
+
+    love.window.setMode(ui.w,ui.h,{fullscreen=false})
+
+    uiCanvas=lg.newCanvas(cw,ch,{
+        format = "rgba8",
+        readable = true,
+        msaa = 4
+    })
+
+    screenW,screenH=love.window.getDesktopDimensions()
     theme=require("themes.default")
     lg.setFont(theme.font.regular)
 
-    gradient=lg.newShader("shaders/gradient.frag")
     if theme.panel.fill.highlight and theme.panel.fill.highlight.gradient then
         gradient:send("colorA",color(theme.panel.fill.highlight.gradient[1]))
         gradient:send("colorB",color(theme.panel.fill.highlight.gradient[2]))
@@ -35,16 +62,6 @@ function love.load()
         gradient:send("colorA",color(theme.panel.fill.color))
         gradient:send("colorB",color(theme.panel.fill.color))
     end
-
-    require("func")
-    ui=require("ui")
-    ui:init()
-
-    uiCanvas=lg.newCanvas(ui.w,ui.h,{
-        format = "rgba8",
-        readable = true,
-        msaa = 4
-    })
 
     control=ui.control(0,0,ui.w,ui.h)
 
@@ -61,6 +78,7 @@ function love.update(dt)
 end
 
 function love.draw()
+    local w,h=love.graphics.getDimensions()
     lg.clear(color(theme.background.color))
 
     if theme.background.image then
@@ -71,16 +89,28 @@ function love.draw()
     end
 
     lg.setCanvas{uiCanvas,stencil=true}
-        lg.clear()
-        control:draw()
+        lg.push()
+        lg.scale(pixel(w,ui.w))
+            lg.clear()
+            control:draw()
+        lg.pop()
     lg.setCanvas()
 
+    
+    
     love.graphics.setBlendMode("alpha", "premultiplied")
         lg.setColor(0,0,0,0.1)
             love.graphics.draw(uiCanvas,2,4)
         lg.setColor(1,1,1,1)
             love.graphics.draw(uiCanvas)
     love.graphics.setBlendMode("alpha")
+    
 
     lg.setColor(1,1,1,1)
+end
+
+function love.keypressed(k)
+    if k=="escape" then
+        love.event.quit()
+    end
 end
