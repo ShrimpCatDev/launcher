@@ -8,29 +8,6 @@ function ui:getPercentage(percent)
     return self.w*(percent/100),self.h*(percent/100)
 end
 
-ui.navigation=object:extend()
-function ui.navigation:new(root)
-    self.root=root
-    self.current=nil
-end
-
-function ui.navigation:getFocus()
-    local result={}
-
-    local function scan(control)
-        if control.focusable then
-            table.insert(result,control)
-        end
-
-        for _,child in ipairs(control.children) do
-            scan(child)
-        end
-    end
-
-    scan(self.root)
-    return result
-end
-
 --main ui control
 ui.control=object:extend()
 

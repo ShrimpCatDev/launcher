@@ -69,7 +69,6 @@ function love.load()
         home=require("ui/home"):init(control)
     }
 
-    ui.navigation(control)
 end
 
 function love.update(dt)
