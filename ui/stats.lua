@@ -6,7 +6,8 @@ function stats:init(parent)
         align={x="left",y="top"},
         margin={bottom=10,top=12,left=12,right=12},
         padding={bottom=0,top=0,left=0,right=12},
-        layout={mode="horizontal",spacing=12}
+        layout={mode="horizontal",spacing=12},
+        
     }) 
 
     --profile picture hi lol
@@ -43,7 +44,8 @@ function stats:init(parent)
         ui.image(0,0,v,self.panel,{
             align={x="left",y="center"},
             margin={bottom=0,top=0,left=0,right=0},
-            class="icon"
+            class="icon",
+            focusable=true
         })
     end
 

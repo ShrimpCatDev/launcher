@@ -8,6 +8,28 @@ function ui:getPercentage(percent)
     return self.w*(percent/100),self.h*(percent/100)
 end
 
+ui.navigation=object:extend()
+function ui.navigation:new(root)
+    self.root=root
+    self.current=nil
+end
+
+function ui.navigation:getFocus()
+    local result={}
+
+    local function scan(control)
+        if control.focusable then
+            table.insert(result,control)
+        end
+
+        for _,child in ipairs(control.children) do
+            scan(child)
+        end
+    end
+
+    scan(self.root)
+    return result
+end
 
 --main ui control
 ui.control=object:extend()
@@ -29,11 +51,16 @@ function ui.control:new(x,y,w,h,parent,data)
 
     self.layout=self.data.layout or {mode="absolute",spacing=0}
 
+    self.input={}
+
     if self.parent then
         self.parent:child(self)
     end
 
     if self.data.init then self.data.init(self) end
+
+    self.focusable=self.data.focusable or false
+    self.focused=false
 end
 
 function ui.control:updateLayout()
@@ -104,6 +131,25 @@ function ui.control:draw()
     end
     lg.translate(0,0)
     lg.pop()
+end
+
+function ui.control:getGlobalPosition()
+    local x,y=self.x,self.y
+    local parent=self.parent
+
+    while parent do
+        x=x+parent.x
+        y=y+parent.y
+        parent=parent.parent
+    end
+
+    return x,y
+end
+
+function ui.control:getCenter()
+    local x,y=self.getGlobalPosition()
+
+    return x+self.w/2,y+self.h/2
 end
 
 --panel system

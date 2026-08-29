@@ -1,4 +1,4 @@
 return {
-    changeAspect=false,
+    changeAspect=true,
     debug=false
 }

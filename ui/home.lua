@@ -31,7 +31,8 @@ function home:init(parent)
         align={x="center",y="bottom"},
         margin={bottom=64,top=0,left=0,right=0},
         padding={bottom=0,top=0,left=12,right=12},
-        layout={mode="horizontal",spacing=64}
+        layout={mode="horizontal",spacing=64},
+        focusable=true
     })
     return home
 end

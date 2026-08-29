@@ -68,6 +68,8 @@ function love.load()
         stats=require("ui/stats"):init(control),
         home=require("ui/home"):init(control)
     }
+
+    ui.navigation(control)
 end
 
 function love.update(dt)
