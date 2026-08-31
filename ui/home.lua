@@ -18,28 +18,42 @@ function home:init(parent)
     self.selectionMenu=ui.custom(0,0,ui.w,200,function(self)
             local s=128
             local sb=192
-            local selected=0
 
-            for i=0,3 do
-                if i==selected then
-                    lg.rectangle("fill",i*(s+self.layout.spacing)+(self.w/2-sb/2),self.y+self.h-sb,sb,sb,10,10)
-                else
-                    lg.rectangle("fill",i*(s+self.layout.spacing)+(self.w/2-s/2),self.y+self.h-s,s,s,10,10)
+            lg.push()
+            lg.translate(self.menuDraw,0)
+                for i=0,3 do
+                    if i==self.data.selection then
+                        lg.rectangle("fill",i*(s+self.layout.spacing)+(self.w/2-sb/2),self.y+self.h-sb,sb,sb,10,10)
+                    else
+                        lg.rectangle("fill",i*(s+self.layout.spacing)+(self.w/2-s/2),self.y+self.h-s,s,s,10,10)
+                    end
                 end
-            end
+            lg.pop()
         end,control,{
         align={x="center",y="bottom"},
         margin={bottom=64,top=0,left=0,right=0},
         padding={bottom=0,top=0,left=12,right=12},
         layout={mode="horizontal",spacing=64},
-        focusable=true
+        selection=0
     })
-    parent.navigation:item(self.selectionMenu,2)
+    self.selectionMenu.menuDraw=0
+
+    parent.navigation:item(self.selectionMenu,2,nil,true)
     return home
 end
 
 function home:update(dt)
-
+    local s=self.selectionMenu
+    if s.focused then
+        
+        if input:pressed("left") then
+            s.data.selection=s.data.selection-1
+        end
+        if input:pressed("right") then
+            s.data.selection=s.data.selection+1
+        end
+    end
+    s.menuDraw=lerpDt(s.menuDraw,-s.data.selection*(128+s.layout.spacing),18,dt)
 end
 
 function home:draw()

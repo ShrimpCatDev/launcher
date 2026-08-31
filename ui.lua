@@ -18,7 +18,7 @@ function ui.navigation:new()
     self.selected={row=1,col=1}
 end
 
-function ui.navigation:item(item,col,row)
+function ui.navigation:item(item,col,row,default)
     self.nav[col] = self.nav[col] or {}
     if not self.navPos[col] then self.navPos[col]=row or 1 end
 
@@ -26,15 +26,20 @@ function ui.navigation:item(item,col,row)
 
     table.insert(self.nav[col],row,item)
     item.navigate = true
-    self.nav[self.selected.col][self.selected.row].focused=true
+    
+    if default then 
+        self.selected={row=row,col=col}
+        self.nav[self.selected.col][self.selected.row].focused=true
+    end
 end
 
 function ui.navigation:input()
-    local p=input:pressed("right") or input:pressed("left") or input:pressed("up") or input:pressed("down")
+    local p=input:pressed("right") or input:pressed("left") or input:pressed("up") or input:pressed("down") or input:pressed("confirm")
 
     if not p then return end
 
     self.nav[self.selected.col][self.selected.row].focused=false
+    if self.nav[self.selected.col][self.selected.row].unfocus then self.nav[self.selected.col][self.selected.row]:unfocus() end
 
     if input:pressed("right") then
         self.selected.row=self.selected.row+1
@@ -55,8 +60,13 @@ function ui.navigation:input()
         self.selected.row=self.navPos[self.selected.col]
     end
 
+    if input:pressed("confirm") then
+        if self.nav[self.selected.col][self.selected.row].confirm then self.nav[self.selected.col][self.selected.row]:confirm() end
+    end
+
     self.navPos[self.selected.col]=self.selected.row
     self.nav[self.selected.col][self.selected.row].focused=true
+    if self.nav[self.selected.col][self.selected.row].focus then self.nav[self.selected.col][self.selected.row]:focus() end
 
 end
 
@@ -164,7 +174,7 @@ function ui.control:draw()
         v:draw()
     end
 
-    if self.navigate and self.focused then
+    if self.navigate and self.focused and debug then
         lg.setColor(0.1,0.5,1,0.2)
         lg.rectangle("fill",0,0,self.w,self.h)
         lg.setColor(1,1,1,1)

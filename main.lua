@@ -9,6 +9,9 @@ function love.load()
     debug=config.debug
     object=require("lib/classic")
     assert=require("lib/inspect")
+
+    timer=require("lib/hump/timer")
+
     require("input")
 
     icons={

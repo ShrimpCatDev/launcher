@@ -18,3 +18,7 @@ end
 function clamp(x, min, max)
     return math.max(min, math.min(x, max))
 end
+
+function lerpDt(current,target,speed,dt)
+    return lerp(current,target,1-math.exp(-speed*dt))
+end
