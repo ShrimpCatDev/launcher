@@ -4,11 +4,13 @@ function ui:init()
     self.w,self.h=love.graphics.getDimensions()
 end
 
+
+--probably didnt need to make this a function but im lazy
 function ui:getPercentage(percent)
     return self.w*(percent/100),self.h*(percent/100)
 end
 
---main ui control
+--main ui control which is the root of everything :3
 ui.control=object:extend()
 
 function ui.control:new(x,y,w,h,parent,data)
@@ -43,32 +45,32 @@ end
 function ui.control:updateLayout()
     local w,h=love.graphics.getDimensions()
 
-    for _,child in pairs(self.children) do
+    for k,child in pairs(self.children) do
         child:updateLayout()
     end
 
     if self.layout.mode=="horizontal" and #self.children>0 then
-        local currentX=self.padding.left
+        local cx=self.padding.left
 
-        for _,child in ipairs(self.children) do
-            child.x=currentX+child.margin.left
+        for k,child in ipairs(self.children) do
+            child.x=cx+child.margin.left
             --child.y=self.padding.top+child.margin.top
             local add=0
-            if _<#self.children then add=self.layout.spacing end
-            currentX=currentX+child.w+child.margin.left+child.margin.right+add
+            if k<#self.children then add=self.layout.spacing end
+            cx=cx+child.w+child.margin.left+child.margin.right+add
         end
-        self.w=currentX+self.padding.right
+        self.w=cx+self.padding.right
     elseif self.layout.mode=="vertical" and #self.children>0 then
-        local currentY=self.padding.top
+        local cy=self.padding.top
 
-        for _,child in ipairs(self.children) do
-            child.y=currentY+child.margin.top
+        for k,child in ipairs(self.children) do
+            child.y=cy+child.margin.top
             --child.y=self.padding.top+child.margin.top
             local add=0
-            if _<#self.children then add=self.layout.spacing end
-            currentY=currentY+child.h+child.margin.top+child.margin.bottom+add
+            if k<#self.children then add=self.layout.spacing end
+            cy=cy+child.h+child.margin.top+child.margin.bottom+add
         end
-        self.h=currentY+self.padding.bottom
+        self.h=cy+self.padding.bottom
     end
 
     if self.parent then 
@@ -110,26 +112,7 @@ function ui.control:draw()
     lg.pop()
 end
 
-function ui.control:getGlobalPosition()
-    local x,y=self.x,self.y
-    local parent=self.parent
-
-    while parent do
-        x=x+parent.x
-        y=y+parent.y
-        parent=parent.parent
-    end
-
-    return x,y
-end
-
-function ui.control:getCenter()
-    local x,y=self.getGlobalPosition()
-
-    return x+self.w/2,y+self.h/2
-end
-
---panel system
+--panel system which is funsies
 ui.panel=ui.control:extend()
 
 function ui.panel:new(x,y,w,h,parent,data)
