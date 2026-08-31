@@ -78,6 +78,7 @@ function ui.control:new(x,y,w,h,parent,data)
     self.y=y or 0
     self.w=w or 0
     self.h=h or 0
+    self.r=0
 
     self.parent=parent
     self.children={}
@@ -90,6 +91,8 @@ function ui.control:new(x,y,w,h,parent,data)
 
     self.offsetX=0
     self.offsetY=0
+    self.offsetW=1
+    self.offsetH=1
 
     self.layout=self.data.layout or {mode="absolute",spacing=0}
 
@@ -330,8 +333,8 @@ end
 function ui.custom:draw()
     lg.push()
     lg.translate(self.offsetX,self.offsetY)
-        self:drawFunc()
-        self.super.draw(self)
+    self:drawFunc()
+    self.super.draw(self)
     lg.pop()
 end
 

@@ -22,7 +22,7 @@ function home:init(parent)
             lg.push()
             lg.translate(self.menuDraw,0)
                 for i=0,3 do
-                    if i==self.data.selection then
+                    if i==self.data.selection and self.focused then
                         lg.rectangle("fill",i*(s+self.layout.spacing)+(self.w/2-sb/2),self.y+self.h-sb,sb,sb,10,10)
                     else
                         lg.rectangle("fill",i*(s+self.layout.spacing)+(self.w/2-s/2),self.y+self.h-s,s,s,10,10)

@@ -21,7 +21,8 @@ function stats:init(parent)
         local s=pixel(self.h,self.profileData.image:getHeight())
 
         lg.setStencilTest("greater", 0)
-            lg.draw(self.profileData.image,self.x,self.y,0,s,s)
+            local w,h=self.profileData.image:getWidth()/2,self.profileData.image:getHeight()/2
+            lg.draw(self.profileData.image,self.x+self.w/2,self.y+self.h/2,self.r,s,s,w,h)
         lg.setStencilTest()
 
         lg.setColor(1,1,1,1)
@@ -30,6 +31,15 @@ function stats:init(parent)
     {init=function(self)
         self.profileData=require("user")
     end})
+
+    self.profile.focus=function(self)
+        timer.tween(0.2,self,{r=math.rad(15),offsetY=-8},"out-cubic")
+    end
+
+    self.profile.unfocus=function(self)
+        timer.tween(0.2,self,{r=math.rad(0),offsetY=0},"out-cubic")
+    end
+
     parent.navigation:item(self.profile,1)
 
     --page panel thing hi lol
@@ -48,6 +58,15 @@ function stats:init(parent)
             class="icon",
             focusable=true
         })
+
+        item.focus=function(self)
+            timer.tween(0.2,self,{offsetY=-5},"out-cubic")
+        end
+
+        item.unfocus=function(self)
+            timer.tween(0.2,self,{offsetY=0},"out-cubic")
+        end
+
         parent.navigation:item(item,1)
     end
 

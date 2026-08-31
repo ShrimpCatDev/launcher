@@ -75,11 +75,10 @@ function love.load()
         home=require("ui/home"):init(control)
     }
 
-    
-
 end
 
 function love.update(dt)
+    timer.update(dt)
     input:update()
     control.navigation:input()
     for k,v in pairs(ui.elements) do
