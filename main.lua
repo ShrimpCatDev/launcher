@@ -32,20 +32,22 @@ function love.load()
 
     if config.changeAspect then
         local sw,sh=love.window.getDesktopDimensions()
-        print(sw)
         local ar=sw/sh
         local vw=math.floor(ui.h*ar)
         ui.w=vw
         cw,ch=sw,sh
     end
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=false})
+    love.window.setMode(ui.w,ui.h,{fullscreen=true})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
         readable = true,
         msaa = 4
     })
+
+    local w,h=love.graphics.getDimensions()
+    globalScale=pixel(w,ui.w)
 
     screenW,screenH=love.window.getDesktopDimensions()
     theme=require("themes.default")

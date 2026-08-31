@@ -41,12 +41,13 @@ function stats:init(parent)
     
     --all of the icons! (hi lol)
     for k,v in pairs(dispIcons) do
-        ui.image(0,0,v,self.panel,{
+        local item=ui.image(0,0,v,self.panel,{
             align={x="left",y="center"},
             margin={bottom=0,top=0,left=0,right=0},
             class="icon",
             focusable=true
         })
+        parent.navigation:item(item,1)
     end
 
     --add the panel to the main control thing hi lol

@@ -10,6 +10,21 @@ function ui:getPercentage(percent)
     return self.w*(percent/100),self.h*(percent/100)
 end
 
+ui.navigation=object:extend()
+
+function ui.navigation:new()
+    self.nav={}
+    self.selected={x=1,y=1}
+end
+
+function ui.navigation:item(item,col,row)
+    if not self.nav[col] then
+        table.insert(self.nav,col,{})
+    end
+    table.insert(self.nav,row or #self.nav[col],item)
+    item.navigate=true
+end
+
 --main ui control which is the root of everything :3
 ui.control=object:extend()
 
@@ -38,8 +53,10 @@ function ui.control:new(x,y,w,h,parent,data)
 
     if self.data.init then self.data.init(self) end
 
-    self.focusable=self.data.focusable or false
-    self.focused=false
+    --self.focusable=self.data.focusable or false
+    --self.focused=false
+
+    self.navigation=ui.navigation()
 end
 
 function ui.control:updateLayout()
@@ -107,6 +124,12 @@ function ui.control:draw()
     lg.translate(self.x,self.y)
     for k,v in pairs(self.children) do
         v:draw()
+    end
+
+    if self.navigate then
+        lg.setColor(0.1,0.5,1,0.2)
+        lg.rectangle("fill",0,0,self.w,self.h)
+        lg.setColor(1,1,1,1)
     end
     lg.translate(0,0)
     lg.pop()
@@ -215,7 +238,8 @@ ui.text=ui.control:extend()
 
 function ui.text:new(x,y,text,parent,data)
     self.font=data.font or theme.font.regular
-    ui.text.super.new(self,x,y,self.font:getWidth(text),self.font:getHeight(),parent,data)
+    local s=1/globalScale
+    ui.text.super.new(self,x,y,self.font:getWidth(text)*s,self.font:getHeight()*s,parent,data)
     self.text=text
 end
 
@@ -228,7 +252,8 @@ function ui.text:draw()
             lg.setColor(color(theme.font.color.default))
         end
         
-        lg.print(self.text,self.x,self.y)
+        local s=1/globalScale
+        lg.print(self.text,self.x,self.y,0,s,s)
         lg.setColor(1,1,1,1)
         self.super.draw(self)
     lg.setFont(font)
