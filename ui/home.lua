@@ -34,6 +34,7 @@ function home:init(parent)
         layout={mode="horizontal",spacing=64},
         focusable=true
     })
+    parent.navigation:item(self.selectionMenu,2)
     return home
 end
 

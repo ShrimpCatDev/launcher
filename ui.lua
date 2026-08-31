@@ -14,15 +14,50 @@ ui.navigation=object:extend()
 
 function ui.navigation:new()
     self.nav={}
-    self.selected={x=1,y=1}
+    self.navPos={}
+    self.selected={row=1,col=1}
 end
 
 function ui.navigation:item(item,col,row)
-    if not self.nav[col] then
-        table.insert(self.nav,col,{})
+    self.nav[col] = self.nav[col] or {}
+    if not self.navPos[col] then self.navPos[col]=row or 1 end
+
+    row=row or (#self.nav[col]+1)
+
+    table.insert(self.nav[col],row,item)
+    item.navigate = true
+    self.nav[self.selected.col][self.selected.row].focused=true
+end
+
+function ui.navigation:input()
+    local p=input:pressed("right") or input:pressed("left") or input:pressed("up") or input:pressed("down")
+
+    if not p then return end
+
+    self.nav[self.selected.col][self.selected.row].focused=false
+
+    if input:pressed("right") then
+        self.selected.row=self.selected.row+1
+        self.selected.row=clamp(self.selected.row,1,#self.nav[self.selected.col])
     end
-    table.insert(self.nav,row or #self.nav[col],item)
-    item.navigate=true
+    if input:pressed("left") then
+        self.selected.row=self.selected.row-1
+        self.selected.row=clamp(self.selected.row,1,#self.nav[self.selected.col])
+    end
+    if input:pressed("down") then
+        self.selected.col=self.selected.col+1
+        self.selected.col=clamp(self.selected.col,1,#self.nav)
+        self.selected.row=self.navPos[self.selected.col]
+    end
+    if input:pressed("up") then
+        self.selected.col=self.selected.col-1
+        self.selected.col=clamp(self.selected.col,1,#self.nav)
+        self.selected.row=self.navPos[self.selected.col]
+    end
+
+    self.navPos[self.selected.col]=self.selected.row
+    self.nav[self.selected.col][self.selected.row].focused=true
+
 end
 
 --main ui control which is the root of everything :3
@@ -54,7 +89,7 @@ function ui.control:new(x,y,w,h,parent,data)
     if self.data.init then self.data.init(self) end
 
     --self.focusable=self.data.focusable or false
-    --self.focused=false
+    self.focused=false
 
     self.navigation=ui.navigation()
 end
@@ -126,7 +161,7 @@ function ui.control:draw()
         v:draw()
     end
 
-    if self.navigate then
+    if self.navigate and self.focused then
         lg.setColor(0.1,0.5,1,0.2)
         lg.rectangle("fill",0,0,self.w,self.h)
         lg.setColor(1,1,1,1)
@@ -143,8 +178,9 @@ function ui.panel:new(x,y,w,h,parent,data)
     if data.highlight then
         self.highlight=true
         self.highlightCanvas=lg.newCanvas(self.w,self.h)
+
         lg.setCanvas(self.highlightCanvas)
-            lg.rectangle("fill",0,0,self.w,self.h)
+            lg.rectangle("fill",self.x,self.y,self.w,self.h)
         lg.setCanvas()
     end
 end
@@ -229,7 +265,9 @@ function ui.image:draw()
         lg.setColor(1,1,1,1)
     end
 
+    --lg.setShader(gradient)
     lg.draw(self.image,self.x,self.y)
+    lg.setShader()
     self.super.draw(self)
 end
 

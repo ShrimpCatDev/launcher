@@ -14,3 +14,7 @@ function drawPanel(x,y,w,h)
 
     lg.rectangle("fill",x,y,w,h,rad,rad)
 end
+
+function clamp(x, min, max)
+    return math.max(min, math.min(x, max))
+end

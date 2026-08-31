@@ -30,6 +30,7 @@ function stats:init(parent)
     {init=function(self)
         self.profileData=require("user")
     end})
+    parent.navigation:item(self.profile,1)
 
     --page panel thing hi lol
     self.panel=ui.panel(0,0,300,50,nil,{

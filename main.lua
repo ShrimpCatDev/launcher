@@ -8,6 +8,7 @@ function love.load()
     config=require("config")
     debug=config.debug
     object=require("lib/classic")
+    assert=require("lib/inspect")
     require("input")
 
     icons={
@@ -38,7 +39,7 @@ function love.load()
         cw,ch=sw,sh
     end
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=true})
+    love.window.setMode(ui.w,ui.h,{fullscreen=false})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
@@ -71,10 +72,13 @@ function love.load()
         home=require("ui/home"):init(control)
     }
 
+    
+
 end
 
 function love.update(dt)
     input:update()
+    control.navigation:input()
     for k,v in pairs(ui.elements) do
         v:update(dt)
     end
@@ -103,7 +107,7 @@ function love.draw()
     
     love.graphics.setBlendMode("alpha", "premultiplied")
         lg.setColor(0,0,0,0.1)
-            love.graphics.draw(uiCanvas,2,4)
+            love.graphics.draw(uiCanvas,2*globalScale,4*globalScale)
         lg.setColor(1,1,1,1)
             love.graphics.draw(uiCanvas)
     love.graphics.setBlendMode("alpha")
