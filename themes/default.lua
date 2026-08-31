@@ -24,8 +24,8 @@ return {
             highlight={
                 color="#4adce4",
                 gradient={
-                    "#63d7f7",
-                    "#a373f0"
+                    "#60BDFF",
+                    "#B6E98C"
                 }
             }
         },
