@@ -78,6 +78,9 @@ function ui.control:new(x,y,w,h,parent,data)
     self.margin=self.data.margin or {top=0,bottom=0,left=0,right=0}
     self.padding=self.data.padding or {top=0,bottom=0,left=0,right=0}
 
+    self.offsetX=0
+    self.offsetY=0
+
     self.layout=self.data.layout or {mode="absolute",spacing=0}
 
     self.input={}
@@ -186,47 +189,50 @@ function ui.panel:new(x,y,w,h,parent,data)
 end
 
 function ui.panel:draw()
-    local rad=(self.h*(theme.panel.radius/100))*0.5
-    if self.h>self.w then
-        rad=(self.w *(theme.panel.radius/100))*0.5
-    end
-
-    if self.highlight then
-        lg.setShader(gradient)
-            lg.stencil(function()
-                lg.rectangle("fill",self.x,self.y,self.w,self.h,rad,rad)
-            end,"replace",1)
-
-            lg.setStencilTest("greater", 0)
-                lg.draw(self.highlightCanvas,self.x,self.y)
-            lg.setStencilTest()
-        lg.setShader()
-
-
-        if theme.panel.outline and theme.panel.outline.highlight then
-            lg.setColor(color(theme.panel.outline.highlight.color,theme.panel.outline.highlight.opacity))
-            local t=lg.getLineWidth()
-            lg.setLineWidth(theme.panel.outline.highlight.thickness)
-            lg.rectangle("line",self.x,self.y,self.w,self.h,rad,rad)
-            lg.setLineWidth(t)
+    lg.push()
+    lg.translate(self.offsetX,self.offsetY)
+        local rad=(self.h*(theme.panel.radius/100))*0.5
+        if self.h>self.w then
+            rad=(self.w *(theme.panel.radius/100))*0.5
         end
-    else
-        lg.setColor(color(theme.panel.fill.color,theme.panel.fill.opacity))
-        lg.rectangle("fill",self.x,self.y,self.w,self.h,rad,rad)
 
-        if theme.panel.outline then
-            lg.setColor(color(theme.panel.outline.color,theme.panel.outline.opacity))
-            local t=lg.getLineWidth()
-            lg.setLineWidth(theme.panel.outline.thickness)
-            lg.rectangle("line",self.x,self.y,self.w,self.h,rad,rad)
-            lg.setLineWidth(t)
+        if self.highlight then
+            lg.setShader(gradient)
+                lg.stencil(function()
+                    lg.rectangle("fill",self.x,self.y,self.w,self.h,rad,rad)
+                end,"replace",1)
+
+                lg.setStencilTest("greater", 0)
+                    lg.draw(self.highlightCanvas,self.x,self.y)
+                lg.setStencilTest()
+            lg.setShader()
+
+
+            if theme.panel.outline and theme.panel.outline.highlight then
+                lg.setColor(color(theme.panel.outline.highlight.color,theme.panel.outline.highlight.opacity))
+                local t=lg.getLineWidth()
+                lg.setLineWidth(theme.panel.outline.highlight.thickness)
+                lg.rectangle("line",self.x,self.y,self.w,self.h,rad,rad)
+                lg.setLineWidth(t)
+            end
+        else
+            lg.setColor(color(theme.panel.fill.color,theme.panel.fill.opacity))
+            lg.rectangle("fill",self.x,self.y,self.w,self.h,rad,rad)
+
+            if theme.panel.outline then
+                lg.setColor(color(theme.panel.outline.color,theme.panel.outline.opacity))
+                local t=lg.getLineWidth()
+                lg.setLineWidth(theme.panel.outline.thickness)
+                lg.rectangle("line",self.x,self.y,self.w,self.h,rad,rad)
+                lg.setLineWidth(t)
+            end
         end
-    end
 
-    
-    lg.setColor(1,1,1,1)
+        
+        lg.setColor(1,1,1,1)
 
-    self.super.draw(self)
+        self.super.draw(self)
+    lg.pop()
 end
 
 function ui.panel:updateLayout()
@@ -253,22 +259,25 @@ function ui.image:new(x,y,image,parent,data)
 end
 
 function ui.image:draw()
-    if debug then
-        lg.setColor(0,0,1,0.5)
-        lg.rectangle("fill",self.x,self.y,self.w,self.h)
-        lg.setColor(1,1,1,1)
-    end
-    
-    if self.class and self.class=="icon" then
-        lg.setColor(color(theme.icons.overlayColor,theme.icons.opacity or 1))
-    else
-        lg.setColor(1,1,1,1)
-    end
+    lg.push()
+    lg.translate(self.offsetX,self.offsetY)
+        if debug then
+            lg.setColor(0,0,1,0.5)
+            lg.rectangle("fill",self.x,self.y,self.w,self.h)
+            lg.setColor(1,1,1,1)
+        end
+        
+        if self.class and self.class=="icon" then
+            lg.setColor(color(theme.icons.overlayColor,theme.icons.opacity or 1))
+        else
+            lg.setColor(1,1,1,1)
+        end
 
-    --lg.setShader(gradient)
-    lg.draw(self.image,self.x,self.y)
-    lg.setShader()
-    self.super.draw(self)
+        --lg.setShader(gradient)
+        lg.draw(self.image,self.x,self.y)
+        lg.setShader()
+        self.super.draw(self)
+    lg.pop()
 end
 
 --text system
@@ -282,19 +291,22 @@ function ui.text:new(x,y,text,parent,data)
 end
 
 function ui.text:draw()
-    local font=lg.getFont()
-    lg.setFont(self.font)
-        if self.parent.highlight then
-            lg.setColor(color(theme.font.color.highlight))
-        else
-            lg.setColor(color(theme.font.color.default))
-        end
-        
-        local s=1/globalScale
-        lg.print(self.text,self.x,self.y,0,s,s)
-        lg.setColor(1,1,1,1)
-        self.super.draw(self)
-    lg.setFont(font)
+    lg.push()
+    lg.translate(self.offsetX,self.offsetY)
+        local font=lg.getFont()
+        lg.setFont(self.font)
+            if self.parent.highlight then
+                lg.setColor(color(theme.font.color.highlight))
+            else
+                lg.setColor(color(theme.font.color.default))
+            end
+            
+            local s=1/globalScale
+            lg.print(self.text,self.x,self.y,0,s,s)
+            lg.setColor(1,1,1,1)
+            self.super.draw(self)
+        lg.setFont(font)
+    lg.pop()
 end
 
 --custom system
@@ -306,8 +318,11 @@ function ui.custom:new(x,y,w,h,drawFunction,parent,data)
 end
 
 function ui.custom:draw()
-    self:drawFunc()
-    self.super.draw(self)
+    lg.push()
+    lg.translate(self.offsetX,self.offsetY)
+        self:drawFunc()
+        self.super.draw(self)
+    lg.pop()
 end
 
 return ui
