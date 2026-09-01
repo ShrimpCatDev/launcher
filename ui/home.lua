@@ -9,12 +9,6 @@ function home:init(parent)
         highlight=theme.panel.fill.highlight
     })
 
-    self.selectedText=ui.text(0,0,"Pokemon Emerald Version",self.selected,{
-        align={x="center",y="center"},
-        margin={bottom=0,top=0,left=0,right=0},
-        font=theme.font.h1
-    })
-
     self.selectionMenu=ui.custom(0,0,ui.w,200,function(self)
             lg.push()
             lg.translate(self.menuDraw,0)
@@ -44,7 +38,7 @@ function home:init(parent)
     end
 
     for i=1,5 do
-        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s})
+        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name="Game "..i})
         print((i-1)*(self.selectionMenu.s+self.selectionMenu.layout.spacing)+(self.selectionMenu.w/2-self.selectionMenu.s/2))
     end
     timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
@@ -52,6 +46,14 @@ function home:init(parent)
     self.selectionMenu.menuDraw=0
 
     parent.navigation:item(self.selectionMenu,2,nil,true)
+
+    self.selectedText=ui.text(0,0,self.selectionMenu.items[self.selectionMenu.data.selection+1].name or "",self.selected,{
+        align={x="center",y="center"},
+        margin={bottom=0,top=0,left=0,right=0},
+        font=theme.font.h1
+    })
+
+
     return home
 end
 
@@ -71,6 +73,8 @@ function home:update(dt)
         if s.data.selection+1~=prev then
             timer.tween(0.2,s.items[prev],{scale=s.s},"out-cubic")
             timer.tween(0.3,s.items[s.data.selection+1],{scale=s.sb},"out-back")
+            self.selectedText.text=self.selectionMenu.items[self.selectionMenu.data.selection+1].name
+            self.selected:updateLayout()
         end
     end
     s.menuDraw=lerpDt(s.menuDraw,-s.data.selection*(128+s.layout.spacing),18,dt)
