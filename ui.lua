@@ -38,8 +38,7 @@ function ui.navigation:input()
 
     if not p then return end
 
-    self.nav[self.selected.col][self.selected.row].focused=false
-    if self.nav[self.selected.col][self.selected.row].unfocus then self.nav[self.selected.col][self.selected.row]:unfocus() end
+    local prevCol,prevRow=self.selected.col,self.selected.row
 
     if input:pressed("right") then
         self.selected.row=self.selected.row+1
@@ -64,10 +63,15 @@ function ui.navigation:input()
         if self.nav[self.selected.col][self.selected.row].confirm then self.nav[self.selected.col][self.selected.row]:confirm() end
     end
 
-    self.navPos[self.selected.col]=self.selected.row
-    self.nav[self.selected.col][self.selected.row].focused=true
-    if self.nav[self.selected.col][self.selected.row].focus then self.nav[self.selected.col][self.selected.row]:focus() end
 
+    if prevCol~=self.selected.col or prevRow~=self.selected.row then
+        self.nav[prevCol][prevRow].focused=false
+        if self.nav[prevCol][prevRow].unfocus then self.nav[prevCol][prevRow]:unfocus() end
+
+        self.navPos[self.selected.col]=self.selected.row
+        self.nav[self.selected.col][self.selected.row].focused=true
+        if self.nav[self.selected.col][self.selected.row].focus then self.nav[self.selected.col][self.selected.row]:focus() end
+    end
 end
 
 --main ui control which is the root of everything :3
