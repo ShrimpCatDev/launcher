@@ -22,7 +22,7 @@ return {
             color="#ffffff",
             opacity=1,
             highlight={
-                color="#4adce4",
+                color="#60BDFF",
                 gradient={
                     "#60BDFF",
                     "#B6E98C"
@@ -46,7 +46,8 @@ return {
     },
 
     icons={
-        overlayColor="#7A7287",
+        overlayColor=color("#7A7287"),
+        overlayColorSelect=color("#9f96ad"),
         opacity=1
     }
 }

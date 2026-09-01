@@ -269,6 +269,8 @@ function ui.image:new(x,y,image,parent,data)
     ui.panel.super.new(self,x,y,image:getWidth(),image:getHeight(),parent,data)
     self.image=image
     self.class=data.class
+    -- copy the theme color so each image has its own color table
+    self.color = {unpack(theme.icons.overlayColor)}
 end
 
 function ui.image:draw()
@@ -281,13 +283,14 @@ function ui.image:draw()
         end
         
         if self.class and self.class=="icon" then
-            lg.setColor(color(theme.icons.overlayColor,theme.icons.opacity or 1))
+            local c=self.color
+            lg.setColor(c[1],c[2],c[3],theme.icons.opacity or 1)
         else
             lg.setColor(1,1,1,1)
         end
 
         --lg.setShader(gradient)
-        lg.draw(self.image,self.x,self.y)
+        lg.draw(self.image,self.x+self.w/2,self.y+self.h/2,self.r,1,1,self.w/2,self.h/2)
         lg.setShader()
         self.super.draw(self)
     lg.pop()
