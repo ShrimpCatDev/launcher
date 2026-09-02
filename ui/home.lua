@@ -37,8 +37,10 @@ function home:init(parent)
         timer.tween(0.3,self.items[self.data.selection+1],{scale=self.sb},"out-back")
     end
 
-    for i=1,67 do
-        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name="Game "..i})
+    local roms=fs:scanFiles("/home/deck/Desktop/romz/")
+    for k,v in ipairs(roms) do
+        local name=v:match("(.+)%..+$")
+        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name})
     end
     timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
 
@@ -51,7 +53,6 @@ function home:init(parent)
         margin={bottom=0,top=0,left=0,right=0},
         font=theme.font.h1
     })
-
 
     return home
 end
