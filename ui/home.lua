@@ -83,7 +83,7 @@ function home:update(dt)
             timer.tween(0.3,s.items[s.data.selection+1],{scale=s.sb},"out-back")
             local t=self.selectionMenu.items[self.selectionMenu.data.selection+1].name
             self.selectedText.text=t
-            self.selectedText.w=self.selectedText.font:getWidth(t)
+            self.selectedText.w=self.selectedText.font:getWidth(t)/globalScale
             self.selectedText:updateLayout()
             self.selected:updateLayout()
             sfx.nav:play()
