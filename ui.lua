@@ -10,6 +10,40 @@ function ui:getPercentage(percent)
     return self.w*(percent/100),self.h*(percent/100)
 end
 
+ui.stack=object:extend()
+
+function ui.stack:new()
+    self.items={}
+end
+
+function ui.stack:add(item)
+    table.insert(self.items,item)
+end
+
+function ui.stack:remove(item)
+    for k,v in ipairs(self.items) do
+        if v==item then
+            table.remove(self.items,v)
+            return
+        end
+    end
+end
+
+function ui.stack:update(dt)
+    for k,v in ipairs(self.items) do
+        if k==#self.items and v.navigation.input then
+            v.navigation:input()
+        end
+        v:update(dt)
+    end
+end
+
+function ui.stack:draw(dt)
+    for k,v in ipairs(self.items) do
+        v:draw()
+    end
+end
+
 ui.navigation=object:extend()
 
 function ui.navigation:new()
@@ -173,6 +207,12 @@ function ui.control:child(child)
     table.insert(self.children,child)
 
     self:updateLayout()
+end
+
+function ui.control:update(dt)
+    for k,v in pairs(self.children) do
+        v:update(dt)
+    end
 end
 
 function ui.control:draw()

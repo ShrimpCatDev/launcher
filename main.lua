@@ -75,7 +75,10 @@ function love.load()
         gradient:send("colorB",color(theme.panel.fill.color))
     end
 
+    stack=ui.stack()
+
     control=ui.control(0,0,ui.w,ui.h)
+    stack:add(control)
 
     ui.elements={
         stats=require("ui/stats"):init(control),
@@ -87,10 +90,9 @@ end
 function love.update(dt)
     timer.update(dt)
     input:update()
-    control.navigation:input()
-    for k,v in pairs(ui.elements) do
-        v:update(dt)
-    end
+    stack:update(dt)
+    --control.navigation:input()
+    --control:update(dt)
 end
 
 function love.draw()
@@ -108,7 +110,7 @@ function love.draw()
         lg.push()
         lg.scale(pixel(w,ui.w))
             lg.clear()
-            control:draw()
+            stack:draw()
         lg.pop()
     lg.setCanvas()
 

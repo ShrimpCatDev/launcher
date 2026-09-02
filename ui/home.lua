@@ -62,34 +62,38 @@ function home:init(parent)
         font=theme.font.h1
     })
 
+    local se=self
+    self.selectionMenu.update=function(self,dt)
+        if self.focused and (input:pressed("left") or input:pressed("right")) then
+            local prev=self.data.selection+1
+            
+            if input:pressed("left") then
+                self.data.selection=self.data.selection-1
+            end
+            if input:pressed("right") then
+                self.data.selection=self.data.selection+1
+            end
+            self.data.selection=clamp(self.data.selection,0,#self.items-1)
+
+            if self.data.selection+1~=prev then
+                timer.tween(0.2,self.items[prev],{scale=self.s},"out-cubic")
+                timer.tween(0.3,self.items[self.data.selection+1],{scale=self.sb},"out-back")
+                local t=self.items[self.data.selection+1].name
+                se.selectedText.text=t
+                se.selectedText.w=se.selectedText.font:getWidth(t)/globalScale
+                se.selectedText:updateLayout()
+                se.selected:updateLayout()
+                sfx.nav:play()
+            end
+        end
+        self.menuDraw=lerpDt(self.menuDraw,-self.data.selection*(128+self.layout.spacing),18,dt)
+    end
+
     return home
 end
 
 function home:update(dt)
-    local s=self.selectionMenu
-    if s.focused and (input:pressed("left") or input:pressed("right")) then
-        local prev=s.data.selection+1
-        
-        if input:pressed("left") then
-            s.data.selection=s.data.selection-1
-        end
-        if input:pressed("right") then
-            s.data.selection=s.data.selection+1
-        end
-        s.data.selection=clamp(s.data.selection,0,#self.selectionMenu.items-1)
 
-        if s.data.selection+1~=prev then
-            timer.tween(0.2,s.items[prev],{scale=s.s},"out-cubic")
-            timer.tween(0.3,s.items[s.data.selection+1],{scale=s.sb},"out-back")
-            local t=self.selectionMenu.items[self.selectionMenu.data.selection+1].name
-            self.selectedText.text=t
-            self.selectedText.w=self.selectedText.font:getWidth(t)/globalScale
-            self.selectedText:updateLayout()
-            self.selected:updateLayout()
-            sfx.nav:play()
-        end
-    end
-    s.menuDraw=lerpDt(s.menuDraw,-s.data.selection*(128+s.layout.spacing),18,dt)
 end
 
 function home:draw()
