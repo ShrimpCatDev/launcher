@@ -14,6 +14,10 @@ function love.load()
 
     require("input")
 
+    sfx={
+        nav=love.audio.newSource("assets/sfx/navigate.mp3","static")
+    }
+
     icons={
         home=lg.newImage("assets/icons/home.png"),
         music=lg.newImage("assets/icons/music.png"),

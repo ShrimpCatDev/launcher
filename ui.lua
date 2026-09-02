@@ -65,6 +65,7 @@ function ui.navigation:input()
 
 
     if prevCol~=self.selected.col or prevRow~=self.selected.row then
+        sfx.nav:play()
         self.nav[prevCol][prevRow].focused=false
         if self.nav[prevCol][prevRow].unfocus then self.nav[prevCol][prevRow]:unfocus() end
 

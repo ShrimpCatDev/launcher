@@ -75,6 +75,7 @@ function home:update(dt)
             timer.tween(0.3,s.items[s.data.selection+1],{scale=s.sb},"out-back")
             self.selectedText.text=self.selectionMenu.items[self.selectionMenu.data.selection+1].name
             self.selected:updateLayout()
+            sfx.nav:play()
         end
     end
     s.menuDraw=lerpDt(s.menuDraw,-s.data.selection*(128+s.layout.spacing),18,dt)

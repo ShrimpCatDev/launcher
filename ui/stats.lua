@@ -61,11 +61,11 @@ function stats:init(parent)
         })
 
         item.focus=function(self)
-            timer.tween(0.2,self,{offsetY=-3,r=math.rad(math.random(-10,10)),color={unpack(theme.icons.overlayColorSelect)}},"out-cubic")
+            timer.tween(0.2,self,{offsetY=-3,color={unpack(theme.icons.overlayColorSelect)}},"out-cubic")
         end
 
         item.unfocus=function(self)
-            timer.tween(0.2,self,{offsetY=0,r=0,color={unpack(theme.icons.overlayColor)}},"out-cubic")
+            timer.tween(0.2,self,{offsetY=0,color={unpack(theme.icons.overlayColor)}},"out-cubic")
         end
 
         parent.navigation:item(item,1)
