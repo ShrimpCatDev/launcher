@@ -5,6 +5,9 @@ function pixel(targetSize,currentSize)
 end
 
 function love.load()
+    nativefs=require("lib/nativefs")
+    fs=require("fs")
+
     config=require("config")
     debug=config.debug
     object=require("lib/classic")

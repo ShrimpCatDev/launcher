@@ -37,9 +37,8 @@ function home:init(parent)
         timer.tween(0.3,self.items[self.data.selection+1],{scale=self.sb},"out-back")
     end
 
-    for i=1,5 do
+    for i=1,67 do
         table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name="Game "..i})
-        print((i-1)*(self.selectionMenu.s+self.selectionMenu.layout.spacing)+(self.selectionMenu.w/2-self.selectionMenu.s/2))
     end
     timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
 
@@ -73,7 +72,10 @@ function home:update(dt)
         if s.data.selection+1~=prev then
             timer.tween(0.2,s.items[prev],{scale=s.s},"out-cubic")
             timer.tween(0.3,s.items[s.data.selection+1],{scale=s.sb},"out-back")
-            self.selectedText.text=self.selectionMenu.items[self.selectionMenu.data.selection+1].name
+            local t=self.selectionMenu.items[self.selectionMenu.data.selection+1].name
+            self.selectedText.text=t
+            self.selectedText.w=self.selectedText.font:getWidth(t)
+            self.selectedText:updateLayout()
             self.selected:updateLayout()
             sfx.nav:play()
         end
