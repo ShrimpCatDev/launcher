@@ -175,6 +175,7 @@ function ui.control:child(child)
 end
 
 function ui.control:draw()
+    lg.setColor(1,1,1,1)
     lg.push()
     lg.translate(self.x,self.y)
     for k,v in pairs(self.children) do
@@ -206,6 +207,7 @@ function ui.panel:new(x,y,w,h,parent,data)
 end
 
 function ui.panel:draw()
+    lg.setColor(1,1,1,1)
     lg.push()
     lg.translate(self.offsetX,self.offsetY)
         local rad=(self.h*(theme.panel.radius/100))*0.5
@@ -278,6 +280,7 @@ function ui.image:new(x,y,image,parent,data)
 end
 
 function ui.image:draw()
+    lg.setColor(1,1,1,1)
     lg.push()
     lg.translate(self.offsetX,self.offsetY)
         if debug then
@@ -311,6 +314,7 @@ function ui.text:new(x,y,text,parent,data)
 end
 
 function ui.text:draw()
+    lg.setColor(1,1,1,1)
     lg.push()
     lg.translate(self.offsetX,self.offsetY)
         local font=lg.getFont()
@@ -338,6 +342,7 @@ function ui.custom:new(x,y,w,h,drawFunction,parent,data)
 end
 
 function ui.custom:draw()
+    lg.setColor(1,1,1,1)
     lg.push()
     lg.translate(self.offsetX,self.offsetY)
     self:drawFunc()

@@ -12,7 +12,7 @@ function stats:init(parent)
 
     --profile picture hi lol
     self.profile=ui.custom(0,0,50,50,function(self)
-        lg.setColor(color(theme.panel.fill.color))
+        --lg.setColor(color(theme.panel.fill.color))
 
         lg.stencil(function()
             lg.circle("fill",self.x+self.w/2,self.y+self.h/2,self.w/2)
