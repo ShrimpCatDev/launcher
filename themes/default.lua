@@ -49,5 +49,9 @@ return {
         overlayColor=color("#7A7287"),
         overlayColorSelect=color("#9f96ad"),
         opacity=1
+    },
+
+    games={
+        default=lg.newImage("assets/icons/blankGame.png")
     }
 }

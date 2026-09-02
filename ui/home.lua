@@ -13,9 +13,17 @@ function home:init(parent)
             lg.push()
             lg.translate(self.menuDraw,0)
                 for i,v in ipairs(self.items) do
-                    --if i==self.data.selection-1 then
-                        lg.rectangle("fill",(i-1)*(self.s+self.layout.spacing)+(self.w/2-v.scale/2),self.y+self.h-v.scale,v.scale,v.scale,10,10)
-                    --end
+                        lg.rectangle("fill",(i-1)*(self.s+self.layout.spacing)+(self.w/2-v.scale/2),self.y+self.h-v.scale,v.scale,v.scale,16,16)
+
+                        local o=v.scale*0.08
+                        local img=theme.games.default
+                        local s=pixel(v.scale-(o*2),img:getWidth())
+                        lg.stencil(function()
+                           lg.rectangle("fill",(i-1)*(self.s+self.layout.spacing)+(self.w/2-v.scale/2)+o,self.y+self.h-v.scale+o,v.scale-(o*2),v.scale-(o*2),10,10) 
+                        end,replace,1)
+                        lg.setStencilTest("greater", 0)
+                        lg.draw(img,(i-1)*(self.s+self.layout.spacing)+(self.w/2-v.scale/2)+o,self.y+self.h-v.scale+o,0,s,s)
+                        lg.setStencilTest()
                 end
             lg.pop()
         end,control,{
