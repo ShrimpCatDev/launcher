@@ -87,11 +87,15 @@ function stats:init(parent)
         align={x="left",y="center"},
         margin={bottom=0,top=0,left=12,right=12}
     })
+
+    self.clock.update=function(s)
+        s.text=os.date("%H:%M")
+    end
     return self
 end
 
 function stats:update(dt)
-    self.clock.text=os.date("%H:%M")
+    
     
 end
 
