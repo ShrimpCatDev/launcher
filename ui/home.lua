@@ -12,29 +12,35 @@ function home:init(parent)
     self.selectionMenu=ui.custom(0,0,ui.w,200,function(self)
             lg.push()
             lg.translate(self.menuDraw,0)
+                local k=0
                 for i,v in ipairs(self.items) do
-                        lg.rectangle("fill",(i-1)*(self.s+self.layout.spacing)+(self.w/2-v.scale/2),self.y+self.h-v.scale,v.scale,v.scale,16,16)
+                    local x=k+(self.w/2-self.sb/2)
+                    local y=self.y+self.h-v.scale
 
-                        local o=v.scale*0.08
-                        local img=theme.games.default
-                        local s=pixel(v.scale-(o*2),img:getWidth())
-                        lg.stencil(function()
-                           lg.rectangle("fill",(i-1)*(self.s+self.layout.spacing)+(self.w/2-v.scale/2)+o,self.y+self.h-v.scale+o,v.scale-(o*2),v.scale-(o*2),10,10) 
-                        end,replace,1)
-                        lg.setStencilTest("greater", 0)
-                        lg.draw(img,(i-1)*(self.s+self.layout.spacing)+(self.w/2-v.scale/2)+o,self.y+self.h-v.scale+o,0,s,s)
-                        lg.setStencilTest()
+                    lg.rectangle("fill",x,y,v.scale,v.scale,16,16)
+
+                    local o=v.scale*0.08
+                    local img=theme.games.default
+                    local s=pixel(v.scale-(o*2),img:getWidth())
+                    lg.stencil(function()
+                        lg.rectangle("fill",x+o,y+o,v.scale-(o*2),v.scale-(o*2),10,10) 
+                    end,replace,1)
+                    lg.setStencilTest("greater", 0)
+                    lg.draw(img,x+o,y+o,0,s,s)
+                    lg.setStencilTest()
+
+                    k=k+(v.scale+(self.layout.spacing))
                 end
             lg.pop()
         end,control,{
         align={x="center",y="bottom"},
         margin={bottom=64,top=0,left=0,right=0},
         padding={bottom=0,top=0,left=12,right=12},
-        layout={mode="horizontal",spacing=64},
+        layout={mode="horizontal",spacing=48},
         selection=0
     })
     self.selectionMenu.items={}
-    self.selectionMenu.s=128
+    self.selectionMenu.s=138
     self.selectionMenu.sb=192
 
     self.selectionMenu.unfocus=function(self)
