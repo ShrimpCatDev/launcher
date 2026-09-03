@@ -64,7 +64,7 @@ function home:init(parent)
 
     local se=self
     self.selectionMenu.update=function(self,dt)
-        if self.focused and (input:pressed("left") or input:pressed("right")) then
+        if self.focused and (input:pressed("left") or input:pressed("right")) and stack.items[#stack.items]==parent then
             local prev=self.data.selection+1
             
             if input:pressed("left") then

@@ -18,6 +18,11 @@ end
 
 function ui.stack:add(item)
     table.insert(self.items,item)
+    item.stack={item=self,index=#self.items}
+end
+
+function ui.stack:index(item)
+    return item.stack==self.items[#self.items]
 end
 
 function ui.stack:remove(item)
@@ -31,7 +36,7 @@ end
 
 function ui.stack:update(dt)
     for k,v in ipairs(self.items) do
-        if k==#self.items and v.navigation.input then
+        if k==#self.items and v.navigation then
             v.navigation:input()
         end
         v:update(dt)
@@ -70,7 +75,7 @@ end
 function ui.navigation:input()
     local p=input:pressed("right") or input:pressed("left") or input:pressed("up") or input:pressed("down") or input:pressed("confirm")
 
-    if not p then return end
+    if not p or #self.nav<1 then return end
 
     local prevCol,prevRow=self.selected.col,self.selected.row
 
