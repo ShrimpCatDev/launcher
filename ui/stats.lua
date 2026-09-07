@@ -7,7 +7,6 @@ function stats:init(parent)
         margin={bottom=10,top=12,left=12,right=12},
         padding={bottom=0,top=0,left=0,right=12},
         layout={mode="horizontal",spacing=12},
-        
     }) 
 
     --profile picture hi lol
@@ -50,6 +49,7 @@ function stats:init(parent)
         padding={bottom=0,top=0,left=12,right=12},
         layout={mode="horizontal",spacing=12}
     })
+    self.panel.class="bar"
     
     --all of the icons! (hi lol)
     for k,v in pairs(dispIcons) do
@@ -82,6 +82,7 @@ function stats:init(parent)
         padding={bottom=0,top=0,left=12,right=12},
         layout={mode="horizontal",spacing=12}
     })
+    self.stats.class="bar"
 
     self.clock=ui.text(0,0,"00:00",self.stats,{
         align={x="left",y="center"},

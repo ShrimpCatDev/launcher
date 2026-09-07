@@ -28,7 +28,7 @@ end
 function ui.stack:remove(item)
     for k,v in ipairs(self.items) do
         if v==item then
-            table.remove(self.items,v)
+            table.remove(self.items,k)
             return
         end
     end
@@ -81,27 +81,29 @@ function ui.navigation:input()
 
     if input:pressed("right") then
         self.selected.row=self.selected.row+1
-        self.selected.row=clamp(self.selected.row,1,#self.nav[self.selected.col])
+        
     end
     if input:pressed("left") then
         self.selected.row=self.selected.row-1
-        self.selected.row=clamp(self.selected.row,1,#self.nav[self.selected.col])
+
     end
     if input:pressed("down") then
         self.selected.col=self.selected.col+1
-        self.selected.col=clamp(self.selected.col,1,#self.nav)
-        self.selected.row=self.navPos[self.selected.col]
+        
+        --self.selected.row=self.navPos[self.selected.col]
     end
     if input:pressed("up") then
         self.selected.col=self.selected.col-1
-        self.selected.col=clamp(self.selected.col,1,#self.nav)
-        self.selected.row=self.navPos[self.selected.col]
+
+        --self.selected.row=self.navPos[self.selected.col]
     end
 
     if input:pressed("confirm") then
         if self.nav[self.selected.col][self.selected.row].confirm then self.nav[self.selected.col][self.selected.row]:confirm() end
     end
-
+    
+    self.selected.row=clamp(self.selected.row,1,#self.nav[self.selected.col])
+    self.selected.col=clamp(self.selected.col,1,#self.nav)
 
     if prevCol~=self.selected.col or prevRow~=self.selected.row then
         sfx.nav:play()
@@ -256,9 +258,12 @@ function ui.panel:draw()
     lg.setColor(1,1,1,1)
     lg.push()
     lg.translate(self.offsetX,self.offsetY)
-        local rad=(self.h*(theme.panel.radius/100))*0.5
-        if self.h>self.w then
-            rad=(self.w *(theme.panel.radius/100))*0.5
+        local rad=32
+        if self.class and self.class=="bar" then
+            rad=(self.h*(theme.panel.radius/100))*0.5
+            if self.h>self.w then
+                rad=(self.w *(theme.panel.radius/100))*0.5
+            end
         end
 
         if self.highlight then

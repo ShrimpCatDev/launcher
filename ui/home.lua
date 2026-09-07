@@ -48,7 +48,7 @@ function home:init(parent)
         timer.tween(0.3,self.items[self.data.selection+1],{scale=self.sb},"out-back")
     end
 
-    local roms=fs:scanFiles("/home/deck/Desktop/romz/")
+    local roms=fs:scanFiles("/home/joseph/Desktop/romz/")
     for k,v in ipairs(roms) do
         local name=v:match("(.+)%..+$")
         table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name})
