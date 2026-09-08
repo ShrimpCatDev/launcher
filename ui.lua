@@ -102,8 +102,9 @@ function ui.navigation:input()
         if self.nav[self.selected.col][self.selected.row].confirm then self.nav[self.selected.col][self.selected.row]:confirm() end
     end
     
-    self.selected.row=clamp(self.selected.row,1,#self.nav[self.selected.col])
     self.selected.col=clamp(self.selected.col,1,#self.nav)
+    self.selected.row=clamp(self.selected.row,1,#self.nav[self.selected.col])
+    
 
     if prevCol~=self.selected.col or prevRow~=self.selected.row then
         sfx.nav:play()

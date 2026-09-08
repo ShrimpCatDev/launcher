@@ -5,10 +5,14 @@ function pixel(targetSize,currentSize)
 end
 
 function love.load()
+    love.filesystem.write("README.txt","hi lol")
+
     nativefs=require("lib/nativefs")
     fs=require("fs")
 
     config=require("config")
+    https=require("runtime/loader").loadHTTPS()
+    --print(https.request("https://google.com"))
     debug=config.debug
     object=require("lib/classic")
     assert=require("lib/inspect")
@@ -85,6 +89,7 @@ function love.load()
         home=require("ui/home"):init(control)
     }
 
+    --test=require("test")
 end
 
 function love.update(dt)
@@ -130,5 +135,11 @@ end
 function love.keypressed(k)
     if k=="escape" then
         love.event.quit()
+    end
+    if k=="f" then
+        print("opening folder")
+        love.system.setClipboardText(love.filesystem.getSaveDirectory( ))
+        local suc=love.system.openURL("file://"..love.filesystem.getSaveDirectory())
+        print(suc)
     end
 end

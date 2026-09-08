@@ -14,19 +14,19 @@ function home:init(parent)
             lg.translate(self.menuDraw,0)
                 local k=0
                 for i,v in ipairs(self.items) do
-                        local x=(i-1)*(self.s+self.layout.spacing)+(self.w/2-v.scale/2)
-                        local y=self.y+self.h-v.scale
-                        lg.rectangle("fill",x,y,v.scale,v.scale,16,16)
+                    local x=(i-1)*(self.s+self.layout.spacing)+(self.w/2-v.scale/2)
+                    local y=self.y+self.h-v.scale
+                    lg.rectangle("fill",x,y,v.scale,v.scale,16,16)
 
-                        local o=v.scale*0.08
-                        local img=theme.games.default
-                        local s=pixel(v.scale-(o*2),img:getWidth())
-                        lg.stencil(function()
-                           lg.rectangle("fill",x+o,self.y+self.h-v.scale+o,v.scale-(o*2),v.scale-(o*2),10,10) 
-                        end,replace,1)
-                        lg.setStencilTest("greater", 0)
-                        lg.draw(img,x+o,self.y+self.h-v.scale+o,0,s,s)
-                        lg.setStencilTest()
+                    local o=v.scale*0.08
+                    local img=v.img
+                    local s=pixel(v.scale-(o*2),img:getWidth())
+                    lg.stencil(function()
+                        lg.rectangle("fill",x+o,self.y+self.h-v.scale+o,v.scale-(o*2),v.scale-(o*2),10,10) 
+                    end,replace,1)
+                    lg.setStencilTest("greater", 0)
+                    lg.draw(img,x+o,self.y+self.h-v.scale+o,0,s,s)
+                    lg.setStencilTest()
                 end
             lg.pop()
         end,control,{
@@ -51,7 +51,15 @@ function home:init(parent)
     local roms=fs:scanFiles("/home/joseph/Desktop/romz/")
     for k,v in ipairs(roms) do
         local name=v:match("(.+)%..+$")
-        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name})
+        local img=theme.games.default
+        local contents,size=love.filesystem.read("icons/"..name..".png")
+
+        if contents then
+            local data=love.image.newImageData(love.filesystem.newFileData(contents,size))
+            img=love.graphics.newImage(data)
+        end
+
+        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img})
     end
     timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
 
