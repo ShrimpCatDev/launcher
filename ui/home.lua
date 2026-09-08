@@ -67,7 +67,8 @@ function home:init(parent)
         timer.tween(0.3,self.items[self.data.selection+1],{scale=self.sb},"out-back")
     end
 
-    local roms=fs:scanFiles("/home/joseph/Desktop/romz/")
+    local path="/home/joseph/Desktop/romz/"
+    local roms=fs:scanFiles(path)
     for k,v in ipairs(roms) do
         local name=v:match("(.+)%..+$")
         local img=theme.games.default
@@ -78,7 +79,7 @@ function home:init(parent)
             img=love.graphics.newImage(data)
         end
 
-        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img})
+        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,path=path..v})
     end
     timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
 
@@ -117,6 +118,10 @@ function home:init(parent)
             end
         end
         self.menuDraw=lerpDt(self.menuDraw,-self.data.selection*(128+self.layout.spacing),18,dt)
+    end
+    self.selectionMenu.confirm=function(self)
+        local c=tostring("flatpak run org.libretro.RetroArch "..[==["]==]..self.items[self.data.selection+1].path..[==["]==])
+        print(c)
     end
 
     return home
