@@ -45,6 +45,12 @@ return {
         
     },
 
+    shadow={
+        color="#000000",
+        opacity=0.2,
+        offset={x=2*globalScale,y=4*globalScale}
+    },
+
     icons={
         overlayColor=color("#7A7287"),
         overlayColorSelect=color("#9f96ad"),

@@ -228,7 +228,7 @@ function ui.control:draw()
     lg.push()
     lg.translate(self.x,self.y)
     for k,v in pairs(self.children) do
-        v:draw()
+         if not v.hidden then v:draw() end
     end
 
     if self.navigate and self.focused and debug then
@@ -266,6 +266,11 @@ function ui.panel:draw()
                 rad=(self.w *(theme.panel.radius/100))*0.5
             end
         end
+
+        --[[if self.shadow and then
+            lg.setColor(color(theme.shadow.color,theme.shadow.opacity))
+            lg.rectangle("fill",self.x+theme.shadow.offset.x,self.y+theme.shadow.offset.y,self.w,self.h,rad,rad)
+        end]]
 
         if self.highlight then
             lg.setShader(gradient)

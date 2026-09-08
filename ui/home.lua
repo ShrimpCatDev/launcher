@@ -1,6 +1,24 @@
 local home={}
 
 function home:init(parent)
+    self.bg=ui.custom(0,0,ui.w,ui.h-100,function(self)
+        lg.draw(self.mesh,self.x,self.y)
+    end,parent,{
+        align={x="center",y="bottom"}
+    })
+
+    self.bg.img=lg.newImage("assets/pika.jpg")
+    local w,h=self.bg.w,self.bg.h
+    local vertices = {
+        {0, 0,    0, 0,   1, 1, 1, 0},
+        {w, 0,    1, 0,   1, 1, 1, 0},
+        {w, h,    1, 1,   1, 1, 1, 1 },
+        {0, h,    0, 1,   1, 1, 1, 1 }
+    }
+    self.bg.mesh=lg.newMesh(vertices,"fan","static")
+    self.bg.mesh:setTexture(self.bg.img)
+    self.bg.hidden=true
+
     self.selected=ui.panel(0,0,300,60,parent,{
         align={x="center",y="center"},
         margin={bottom=100,top=0,left=0,right=0},
@@ -8,6 +26,7 @@ function home:init(parent)
         layout={mode="horizontal",spacing=12},
         highlight=theme.panel.fill.highlight
     })
+    self.selected.shadow=true
 
     self.selectionMenu=ui.custom(0,0,ui.w,200,function(self)
             lg.push()

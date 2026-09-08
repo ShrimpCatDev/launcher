@@ -85,8 +85,9 @@ function love.load()
     stack:add(control)
 
     ui.elements={
-        stats=require("ui/stats"):init(control),
-        home=require("ui/home"):init(control)
+        home=require("ui/home"):init(control),
+        stats=require("ui/stats"):init(control)
+        
     }
 
     --test=require("test")
@@ -111,6 +112,8 @@ function love.draw()
         lg.draw(i,ui.w/2,ui.h/2,0,s,s,i:getWidth()/2,i:getHeight()/2)
     end
 
+    ui.elements.home.bg:draw()
+
     lg.setCanvas{uiCanvas,stencil=true}
         lg.push()
         lg.scale(pixel(w,ui.w))
@@ -118,8 +121,6 @@ function love.draw()
             stack:draw()
         lg.pop()
     lg.setCanvas()
-
-    
     
     love.graphics.setBlendMode("alpha", "premultiplied")
         lg.setColor(0,0,0,0.1)
