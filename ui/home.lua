@@ -119,9 +119,14 @@ function home:init(parent)
         end
         self.menuDraw=lerpDt(self.menuDraw,-self.data.selection*(128+self.layout.spacing),18,dt)
     end
+
+    --flatpak run org.libretro.RetroArch -L ~/.var/app/org.libretro.RetroArch/config/retroarch/cores/mgba_libretro.so "/home/joseph/Desktop/romz/Pokemon - Emerald Version.gba"
+
     self.selectionMenu.confirm=function(self)
-        local c=tostring("flatpak run org.libretro.RetroArch "..[==["]==]..self.items[self.data.selection+1].path..[==["]==])
+        local c='/usr/bin/flatpak run org.libretro.RetroArch -L ~/.var/app/org.libretro.RetroArch/config/retroarch/cores/mgba_libretro.so "'..self.items[self.data.selection+1].path..'"'
         print(c)
+        a,b,c=os.execute(c)
+        print(a,b,c)
     end
 
     return home

@@ -53,7 +53,7 @@ function love.load()
         cw,ch=sw,sh
     end
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=false})
+    love.window.setMode(ui.w,ui.h,{fullscreen=true})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
