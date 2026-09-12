@@ -22,6 +22,27 @@ for k,v in ipairs(p) do
     table.insert(platforms,json.decode(love.filesystem.read("data/platforms/"..v)))
 end
 
+function getPlatform(extension)
+    for k,v in ipairs(platforms) do
+        for i,e in ipairs(v.extensions) do
+            if e==extension then
+                return v
+            end
+        end
+    end
+    return nil
+end
+
+function getEmulator(platform)
+    for k,v in ipairs(emulators) do
+        print(platform)
+        if platform.emulator.backend==v.id then
+            return v
+        end
+    end
+    return nil
+end
+
 function love.load()
     love.filesystem.write("README.txt","hi lol")
 

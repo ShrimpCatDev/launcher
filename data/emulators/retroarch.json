@@ -2,7 +2,8 @@
     "id":"retroarch",
     "name":"RetroArch",
 
-    "command": "flatpak run org.libretro.RetroArch",
+    "command": "/usr/bin/flatpak run org.libretro.RetroArch",
+    "cores":"~/.var/app/org.libretro.RetroArch/config/retroarch/cores/",
 
     "args": [
         "-L",

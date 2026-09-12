@@ -71,6 +71,10 @@ function home:init(parent)
     local roms=fs:scanFiles(path)
     for k,v in ipairs(roms) do
         local name=v:match("(.+)%..+$")
+        local ext=v:match("%.(.+)$")
+        local p=getPlatform(ext)
+        print(p and p.id or nil)
+
         local img=theme.games.default
         local contents,size=love.filesystem.read("icons/"..name..".png")
 
@@ -79,7 +83,7 @@ function home:init(parent)
             img=love.graphics.newImage(data)
         end
 
-        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,path=path..v})
+        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,path=path..v,platform=p})
     end
     timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
 
@@ -123,10 +127,21 @@ function home:init(parent)
     --flatpak run org.libretro.RetroArch -L ~/.var/app/org.libretro.RetroArch/config/retroarch/cores/mgba_libretro.so "/home/joseph/Desktop/romz/Pokemon - Emerald Version.gba"
 
     self.selectionMenu.confirm=function(self)
-        local c='/usr/bin/flatpak run org.libretro.RetroArch -L ~/.var/app/org.libretro.RetroArch/config/retroarch/cores/mgba_libretro.so "'..self.items[self.data.selection+1].path..'"'
-        print(c)
-        a,b,c=os.execute(c)
-        print(a,b,c)
+        --local c='/usr/bin/flatpak run org.libretro.RetroArch -L ~/.var/app/org.libretro.RetroArch/config/retroarch/cores/mgba_libretro.so "'..self.items[self.data.selection+1].path..'"'
+        local c=""
+        local item=self.items[self.data.selection+1]
+        if item.platform then
+            local e=getEmulator(item.platform)
+            c=e.command
+            for k,v in ipairs(e.args) do
+                c=c.." "..v
+            end
+            c=string.gsub(c,"{core}",e.cores..item.platform.emulator.core)
+            c=string.gsub(c,"{rom}",'"'..item.path..'"')
+            print(c)
+        end
+        
+        os.execute(c)
     end
 
     return home

@@ -1,0 +1,14 @@
+{
+    "id": "snes",
+    "name": "Super Nintendo Entertainment System",
+
+    "extensions": [
+        "smc",
+        "sfc"
+    ],
+
+    "emulator": {
+        "backend": "retroarch",
+        "core": "snes9x_libretro.so"
+    }
+}

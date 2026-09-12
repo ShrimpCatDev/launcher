@@ -8,6 +8,6 @@
 
     "emulator": {
         "backend": "retroarch",
-        "core": "mgba_liberto.so"
+        "core": "mgba_libretro.so"
     }
 }

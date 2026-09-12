@@ -1,0 +1,13 @@
+{
+    "id": "gbc",
+    "name": "Game Boy Color",
+
+    "extensions": [
+        "gbc"
+    ],
+
+    "emulator": {
+        "backend": "retroarch",
+        "core": "sameboy_libretro.so"
+    }
+}
