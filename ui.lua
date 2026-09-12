@@ -224,6 +224,12 @@ function ui.control:update(dt)
 end
 
 function ui.control:draw()
+    if self.data.class and self.data.class=="overlay" then
+        lg.setColor(0,0,0,0.3)
+        lg.rectangle("fill",0,0,ui.w,ui.h)
+        lg.setColor(1,1,1,1)
+    end
+
     lg.setColor(1,1,1,1)
     lg.push()
     lg.translate(self.x,self.y)

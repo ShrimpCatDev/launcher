@@ -99,7 +99,7 @@ function home:init(parent)
 
     local se=self
     self.selectionMenu.update=function(self,dt)
-        if self.focused and (input:pressed("left") or input:pressed("right")) and stack.items[#stack.items]==parent then
+        if self.focused and (input:pressed("left") or input:pressed("right") or input:pressed("options")) and stack.items[#stack.items]==parent then
             local prev=self.data.selection+1
             
             if input:pressed("left") then
@@ -119,6 +119,10 @@ function home:init(parent)
                 se.selectedText:updateLayout()
                 se.selected:updateLayout()
                 sfx.nav:play()
+            end
+
+            if input:pressed("options") then
+                local s=require("ui/panels/gameSettings"):init(control,self.items[self.data.selection+1])
             end
         end
         self.menuDraw=lerpDt(self.menuDraw,-self.data.selection*(128+self.layout.spacing),18,dt)

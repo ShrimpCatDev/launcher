@@ -25,7 +25,7 @@ return {
                 color="#60BDFF",
                 gradient={
                     "#60BDFF",
-                    "#B6E98C"
+                    "#9be95b"
                 }
             }
         },

@@ -1,0 +1,13 @@
+{
+    "id": "nes",
+    "name": "Nintendo Entertainment System",
+
+    "extensions": [
+        "nes"
+    ],
+
+    "emulator": {
+        "backend": "retroarch",
+        "core": "nestopia_libretro.so"
+    }
+}

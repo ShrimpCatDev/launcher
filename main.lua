@@ -92,7 +92,7 @@ function love.load()
         cw,ch=sw,sh
     end
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=false})
+    love.window.setMode(ui.w,ui.h,{fullscreen=false,msaa=2})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
@@ -126,7 +126,6 @@ function love.load()
     ui.elements={
         home=require("ui/home"):init(control),
         stats=require("ui/stats"):init(control)
-        
     }
 
 
