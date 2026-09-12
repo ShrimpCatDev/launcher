@@ -1,0 +1,13 @@
+{
+    "id": "gba",
+    "name": "Game Boy Advance",
+
+    "extensions": [
+        "gba"
+    ],
+
+    "emulator": {
+        "backend": "retroarch",
+        "core": "mgba_liberto.so"
+    }
+}

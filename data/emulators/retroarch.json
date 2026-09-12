@@ -1,0 +1,12 @@
+{
+    "id":"retroarch",
+    "name":"RetroArch",
+
+    "command": "flatpak run org.libretro.RetroArch",
+
+    "args": [
+        "-L",
+        "{core}",
+        "{rom}"
+    ]
+}
