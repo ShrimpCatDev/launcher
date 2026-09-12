@@ -128,16 +128,10 @@ function love.load()
         stats=require("ui/stats"):init(control)
     }
 
+    local a
+    key,a=nativefs.read("/home/joseph/Desktop/api.txt")
+    print(key)
 
-    local a,key=love.filesystem.read("./Desktop/api.txt")
-    if key=="BANANA" then
-        print("KEY: "..key)
-        print(https.request("https://www.steamgriddb.com/api/v2/search/autocomplete/kirbys_adventure",{
-            headers={
-                ["Authorization"]="Bearer " .. key
-            }
-        }))
-    end
 end
 
 function love.update(dt)
