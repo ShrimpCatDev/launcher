@@ -129,7 +129,16 @@ function love.load()
         
     }
 
-    --test=require("test")
+
+    local a,key=love.filesystem.read("./Desktop/api.txt")
+    if key=="BANANA" then
+        print("KEY: "..key)
+        print(https.request("https://www.steamgriddb.com/api/v2/search/autocomplete/kirbys_adventure",{
+            headers={
+                ["Authorization"]="Bearer " .. key
+            }
+        }))
+    end
 end
 
 function love.update(dt)
