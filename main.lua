@@ -4,6 +4,24 @@ function pixel(targetSize,currentSize)
     return targetSize/currentSize
 end
 
+json=require("lib/json")
+
+local e=love.filesystem.getDirectoryItems("data/emulators")
+emulators={}
+print("EMULATORS:")
+for k,v in ipairs(e) do
+    print(v)
+    table.insert(emulators,json.decode(love.filesystem.read("data/emulators/"..v)))
+end
+
+local p=love.filesystem.getDirectoryItems("data/platforms")
+platforms={}
+print("PLATFORMS:")
+for k,v in ipairs(p) do
+    print(v)
+    table.insert(platforms,json.decode(love.filesystem.read("data/platforms/"..v)))
+end
+
 function love.load()
     love.filesystem.write("README.txt","hi lol")
 
@@ -53,7 +71,7 @@ function love.load()
         cw,ch=sw,sh
     end
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=true})
+    love.window.setMode(ui.w,ui.h,{fullscreen=false})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
