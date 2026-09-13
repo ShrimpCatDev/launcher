@@ -28,7 +28,12 @@ end
 function ui.stack:remove(item)
     for k,v in ipairs(self.items) do
         if v==item then
+            if v.parent then
+                v:removeFromParent()
+            end
+            v.hidden=true
             table.remove(self.items,k)
+            v=nil
             return
         end
     end
@@ -214,6 +219,16 @@ function ui.control:child(child)
     child.parent=self
     table.insert(self.children,child)
 
+    self:updateLayout()
+end
+
+function ui.control:removeFromParent()
+    for i,v in ipairs(self.parent.children) do
+        if v==self then
+            table.remove(self.parent.children,i)
+            break
+        end
+    end
     self:updateLayout()
 end
 

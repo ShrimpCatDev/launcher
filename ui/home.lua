@@ -67,7 +67,7 @@ function home:init(parent)
         timer.tween(0.3,self.items[self.data.selection+1],{scale=self.sb},"out-back")
     end
 
-    local path="/home/joseph/Desktop/romz/"
+    local path=profile.roms
     local roms=fs:scanFiles(path)
     for k,v in ipairs(roms) do
         local name=v:match("(.+)%..+$")

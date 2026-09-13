@@ -1,7 +1,7 @@
 local settings={}
 
 function settings:init(parent,item)
-    self.control=ui.control(0,0,ui.w,ui.h,nil,{
+    self.control=ui.control(0,0,ui.w,ui.h,parent,{
         align={x="center",y="center"},
         margin={bottom=0,top=0,left=0,right=0},
         padding={bottom=0,top=0,left=0,right=0},

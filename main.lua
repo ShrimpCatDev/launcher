@@ -92,7 +92,9 @@ function love.load()
         cw,ch=sw,sh
     end
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=false,msaa=2})
+    profile=json.decode(love.filesystem.read("profile.json"))
+
+    love.window.setMode(ui.w,ui.h,{fullscreen=true,msaa=2})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
@@ -130,7 +132,6 @@ function love.load()
 
     local a
     key,a=nativefs.read("/home/joseph/Desktop/api.txt")
-    print(key)
 
 end
 
