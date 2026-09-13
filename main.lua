@@ -94,7 +94,7 @@ function love.load()
 
     profile=json.decode(love.filesystem.read("profile.json"))
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=true,msaa=2})
+    love.window.setMode(ui.w,ui.h,{fullscreen=false,msaa=2})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
@@ -130,8 +130,7 @@ function love.load()
         stats=require("ui/stats"):init(control)
     }
 
-    local a
-    key,a=nativefs.read("/home/joseph/Desktop/api.txt")
+    key=profile.steamgriddb
 
 end
 
