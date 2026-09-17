@@ -428,4 +428,54 @@ function ui.custom:draw()
     lg.pop()
 end
 
+ui.toggle=ui.control:extend()
+
+function ui.toggle:new(parent,data)
+    ui.panel.super.new(self,0,0,46,22,parent,data)
+    self.switch=false
+    self.color=color(theme.widget.color.regular)
+    self.circle={radius=self.h/2,offset=3,opacity=0.5}
+    self.circle.x=self.circle.radius
+    self.circle.y=self.h+self.circle.offset
+
+    self.focus=function(self)
+        self.focused=true
+        timer.tween(0.2,self.circle,{opacity=1},"out-cubic")
+    end
+
+    self.unfocus=function(self)
+        self.focused=false
+        timer.tween(0.2,self.circle,{opacity=0.5},"out-cubic")
+    end
+
+    self.confirm=function(self)
+        self.switch=not self.switch
+        if self.toggle then self.toggle() end
+
+        if self.switch then
+            timer.tween(0.2,self.circle,{x=self.w-self.circle.radius},"out-back")
+            timer.tween(0.2,self,{color=color(theme.widget.color.highlight)},"out-cubic")
+        else   
+            timer.tween(0.2,self,{color=color(theme.widget.color.regular)},"out-cubic")
+            timer.tween(0.2,self.circle,{x=self.circle.radius},"out-back")
+        end
+    end
+end
+
+function ui.toggle:draw()
+    lg.setColor(1,1,1,1)
+    lg.push()
+    lg.translate(self.offsetX,self.offsetY)
+        lg.setColor(self.color)
+        lg.rectangle("fill",self.x,self.y,self.w,self.h,self.h/2,self.h/2)
+
+        lg.setColor(color(theme.widget.color.blank,self.circle.opacity))
+        local h=self.h/2
+        lg.circle("fill",self.circle.x,self.circle.y,self.circle.radius-self.circle.offset)
+
+        lg.setColor(1,1,1,1)
+        self.super.draw(self)
+    lg.pop()
+end
+
 return ui

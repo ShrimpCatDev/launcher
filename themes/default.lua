@@ -45,6 +45,15 @@ return {
         
     },
 
+    widget={
+        color={
+            regular="#7A7287",
+            regularSelect="#9f96ad",
+            highlight="#60BDFF",
+            blank="#ffffff"
+        }
+    },
+
     shadow={
         color="#000000",
         opacity=0.2,
