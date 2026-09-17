@@ -90,7 +90,14 @@ function stats:init(parent)
 
         state, percent, seconds = love.system.getPowerInfo()
 
-        lg.setColor(color(theme.widget.color.highlight))
+        if percent>=40 then
+            lg.setColor(color(theme.widget.color.battery.full))
+        elseif percent >=20 then
+            lg.setColor(color(theme.widget.color.battery.low))
+        else
+            lg.setColor(color(theme.widget.color.battery.empty))
+        end
+
         lg.rectangle("fill",self.x+3,self.y+2,self.bmw*(percent/100),self.h-4)
         lg.setColor(color(theme.widget.color.regular))
             lg.draw(self.img,self.x,self.y,0,scale,scale)

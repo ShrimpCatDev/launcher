@@ -50,7 +50,13 @@ return {
             regular="#7A7287",
             regularSelect="#9f96ad",
             highlight="#60BDFF",
-            blank="#ffffff"
+            blank="#ffffff",
+
+            battery={
+                full="#60BDFF",
+                low="#fac32b",
+                empty="#f03860"
+            }
         }
     },
 
