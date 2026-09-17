@@ -1,7 +1,7 @@
 return {
     background={
         color="#e1e0e0",
-        --image=lg.newImage("assets/aero.jpg")
+        image=lg.newImage("assets/tommy.jpg")
     },
 
     font={

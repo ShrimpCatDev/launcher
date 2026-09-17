@@ -146,11 +146,12 @@ function love.draw()
     local w,h=love.graphics.getDimensions()
     lg.clear(color(theme.background.color))
 
+    local w,h=love.graphics.getDimensions()
     if theme.background.image then
         local i=theme.background.image
-        local s=math.max(pixel(ui.h,i:getHeight()),pixel(ui.w,i:getWidth()))
+        local s=math.max(pixel(h,i:getHeight()),pixel(w,i:getWidth()))
         
-        lg.draw(i,ui.w/2,ui.h/2,0,s,s,i:getWidth()/2,i:getHeight()/2)
+        lg.draw(i,w/2,h/2,0,s,s,i:getWidth()/2,i:getHeight()/2)
     end
 
     --ui.elements.home.bg:draw()
