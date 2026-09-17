@@ -436,7 +436,7 @@ function ui.toggle:new(parent,data)
     self.color=color(theme.widget.color.regular)
     self.circle={radius=self.h/2,offset=3,opacity=0.5}
     self.circle.x=self.circle.radius
-    self.circle.y=self.h+self.circle.offset
+    self.circle.y=self.circle.radius
 
     self.focus=function(self)
         self.focused=true
@@ -471,7 +471,7 @@ function ui.toggle:draw()
 
         lg.setColor(color(theme.widget.color.blank,self.circle.opacity))
         local h=self.h/2
-        lg.circle("fill",self.circle.x,self.circle.y,self.circle.radius-self.circle.offset)
+        lg.circle("fill",self.x+self.circle.x,self.y+self.circle.y,self.circle.radius-self.circle.offset)
 
         lg.setColor(1,1,1,1)
         self.super.draw(self)

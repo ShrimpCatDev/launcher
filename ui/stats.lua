@@ -7,15 +7,7 @@ function stats:init(parent)
         margin={bottom=10,top=12,left=12,right=12},
         padding={bottom=0,top=0,left=0,right=12},
         layout={mode="horizontal",spacing=12},
-    }) 
-
-    self.test=ui.toggle(self.main,{
-        align={x="left",y="center"},
-        margin={bottom=0,top=0,left=0,right=0},
-        class="toggle",
-        focusable=true
     })
-    parent.navigation:item(self.test,1)
 
     --profile picture hi lol
     self.profile=ui.custom(0,0,50,50,function(self)

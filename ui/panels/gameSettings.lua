@@ -85,6 +85,14 @@ function settings:init(parent,item)
             stack:remove(self)
         end
     end
+    
+    self.test=ui.toggle(self.panel,{
+        align={x="center",y="center"},
+        margin={bottom=0,top=0,left=0,right=0},
+        class="toggle",
+        focusable=true
+    })
+    self.control.navigation:item(self.test,2)
 
     stack:add(self.control)
 
