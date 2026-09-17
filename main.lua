@@ -62,7 +62,9 @@ function love.load()
     require("input")
 
     sfx={
-        nav=love.audio.newSource("assets/sfx/navigate.mp3","static")
+        nav=love.audio.newSource("assets/sfx/navigate.mp3","static"),
+        confirm=love.audio.newSource("assets/sfx/confirm.mp3","static"),
+        toggle=love.audio.newSource("assets/sfx/toggle.ogg","static")
     }
 
     icons={
@@ -95,7 +97,7 @@ function love.load()
     
     profile=json.decode(love.filesystem.read("profile.json"))
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=true,msaa=2})
+    love.window.setMode(ui.w,ui.h,{fullscreen=false,msaa=2})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",

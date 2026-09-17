@@ -85,7 +85,7 @@ function home:init(parent)
 
         table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,path=path..v,platform=p})
     end
-    timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
+    --timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
 
     self.selectionMenu.menuDraw=0
 

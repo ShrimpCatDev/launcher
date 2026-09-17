@@ -74,6 +74,7 @@ function ui.navigation:item(item,col,row,default)
     if default then 
         self.selected={row=row,col=col}
         self.nav[self.selected.col][self.selected.row].focused=true
+        if self.nav[self.selected.col][self.selected.row].focus then self.nav[self.selected.col][self.selected.row]:focus() end
     end
 end
 
@@ -314,6 +315,9 @@ function ui.panel:draw()
             end
         else
             lg.setColor(color(theme.panel.fill.color,theme.panel.fill.opacity))
+            if self.data.color then
+                lg.setColor(self.data.color)
+            end
             lg.rectangle("fill",self.x,self.y,self.w,self.h,rad,rad)
 
             if theme.panel.outline then
@@ -453,7 +457,10 @@ function ui.toggle:new(parent,data)
 
     self.confirm=function(self)
         self.switch=not self.switch
-        if self.toggle then self.toggle() end
+        if self.toggle then self:toggle() end
+
+        sfx.confirm:stop()
+        sfx.confirm:play()
 
         if self.switch then
             timer.tween(0.2,self.circle,{x=self.w-self.circle.radius},"out-back")
@@ -479,6 +486,55 @@ function ui.toggle:draw()
         lg.setColor(1,1,1,1)
         self.super.draw(self)
     lg.pop()
+end
+
+ui.button=ui.control:extend()
+
+function ui.button:new(text,parent,data)
+    self.font=data.font or theme.font.regular
+    self.padX=12
+    self.padY=6
+    local s=1/globalScale
+    self.text=text
+    ui.text.super.new(self,x,y,self.font:getWidth(text)*s+(self.padX*2),self.font:getHeight()*s+(self.padY*2),parent,data)
+    
+    self.color=color(theme.widget.color.regular)
+
+    self.focus=function(self)
+        self.focused=true
+        timer.tween(0.2,self,{color=color(theme.widget.color.highlight)},"out-cubic")
+    end
+
+    self.unfocus=function(self)
+        self.focused=false
+        timer.tween(0.2,self,{color=color(theme.widget.color.regular)},"out-cubic")
+    end
+
+    self.confirm=function(self)
+        sfx.confirm:stop()
+        sfx.confirm:play()
+        self:press()
+        local dx=4
+        timer.tween(0.05,self,{y=self.y+dx},"in-cubic",function()
+            timer.tween(0.1,self,{y=self.y-dx},"out-back")
+        end)
+    end
+end
+
+function ui.button:draw()
+    lg.setColor(self.color)
+    lg.rectangle("fill",self.x,self.y,self.w,self.h,self.h/2)
+
+    local font=lg.getFont()
+    lg.setFont(self.font)
+
+    lg.setColor(color(theme.widget.color.text))
+            
+    local s=1/globalScale
+    lg.print(self.text,self.x+self.padX,self.y+self.padY,0,s,s)
+    lg.setColor(1,1,1,1)
+    self.super.draw(self)
+    lg.setFont(font)
 end
 
 return ui

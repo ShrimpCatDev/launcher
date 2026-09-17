@@ -51,6 +51,7 @@ return {
             regularSelect="#9f96ad",
             highlight="#60BDFF",
             blank="#ffffff",
+            text="#ffffff",
 
             battery={
                 full="#60BDFF",

@@ -24,7 +24,7 @@ function settings:init(parent,item)
         font=theme.font.large
     })
 
-    local a=ui.text(0,0,"Scrape",self.panel,{
+    --[[local a=ui.text(0,0,"Scrape",self.panel,{
         align={x="center",y="top"},
         margin={bottom=0,top=0,left=0,right=0},
         padding={bottom=0,top=0,left=0,right=0},
@@ -33,8 +33,17 @@ function settings:init(parent,item)
     })
     a.confirm=function(self)
         item.img=scrape(item.name)
+    end]]
+    --self.control.navigation:item(a,1,1,true)
+
+    self.button=ui.button("Scrape from SteamGridDB",self.panel,{
+        align={x="center",y="center"}
+    })
+    self.button.press=function(self)
+        --item.img=scrape(item.name)
+        
     end
-    self.control.navigation:item(a,1,1,true)
+    self.control.navigation:item(self.button,1,1,true)
 
     self.control.update=function(self,dt)
         if input:pressed("back") and stack.items[#stack.items]==self then
@@ -50,6 +59,8 @@ function settings:init(parent,item)
         focusable=true
     })
     self.control.navigation:item(self.test,2)
+
+    
 
     stack:add(self.control)
 
