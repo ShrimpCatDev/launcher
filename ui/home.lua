@@ -7,7 +7,7 @@ function home:init(parent)
         align={x="center",y="bottom"}
     })
 
-    self.bg.img=lg.newImage("assets/pika.jpg")
+    self.bg.img=lg.newImage("assets/default.png",{mipmaps=true})
     local w,h=self.bg.w,self.bg.h
     local vertices = {
         {0, 0,    0, 0,   1, 1, 1, 0},
@@ -80,7 +80,7 @@ function home:init(parent)
 
         if contents then
             local data=love.image.newImageData(love.filesystem.newFileData(contents,size))
-            img=love.graphics.newImage(data)
+            img=love.graphics.newImage(data,{mipmaps=true})
         end
 
         table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,path=path..v,platform=p})

@@ -95,7 +95,7 @@ function love.load()
 
     profile=json.decode(love.filesystem.read("profile.json"))
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=false,msaa=2})
+    love.window.setMode(ui.w,ui.h,{fullscreen=true,msaa=2})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
