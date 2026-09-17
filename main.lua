@@ -44,6 +44,7 @@ function getEmulator(platform)
 end
 
 function love.load()
+    love.graphics.setDefaultFilter("linear","linear")
     love.filesystem.write("README.txt","hi lol")
 
     nativefs=require("lib/nativefs")
@@ -65,12 +66,12 @@ function love.load()
     }
 
     icons={
-        home=lg.newImage("assets/icons/home.png"),
-        music=lg.newImage("assets/icons/music.png"),
-        social=lg.newImage("assets/icons/social.png"),
-        media=lg.newImage("assets/icons/media.png"),
-        ra=lg.newImage("assets/icons/ra.png"),
-        settings=lg.newImage("assets/icons/settings.png"),
+        home=lg.newImage("assets/icons/home.png",{mipmaps=true}),
+        music=lg.newImage("assets/icons/music.png",{mipmaps=true}),
+        social=lg.newImage("assets/icons/social.png",{mipmaps=true}),
+        media=lg.newImage("assets/icons/media.png",{mipmaps=true}),
+        ra=lg.newImage("assets/icons/ra.png",{mipmaps=true}),
+        settings=lg.newImage("assets/icons/settings.png",{mipmaps=true}),
     }
 
     dispIcons={icons.home,icons.music,icons.social,icons.media,icons.ra,icons.settings}

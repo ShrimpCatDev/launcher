@@ -58,7 +58,7 @@ function stats:init(parent)
             margin={bottom=0,top=0,left=0,right=0},
             class="icon",
             focusable=true
-        })
+        },28,28)
 
         item.focus=function(self)
             timer.tween(0.2,self,{offsetY=-3,color={unpack(theme.icons.overlayColorSelect)}},"out-cubic")

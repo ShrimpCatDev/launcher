@@ -349,8 +349,8 @@ end
 --image system
 ui.image=ui.control:extend()
 
-function ui.image:new(x,y,image,parent,data)
-    ui.panel.super.new(self,x,y,image:getWidth(),image:getHeight(),parent,data)
+function ui.image:new(x,y,image,parent,data,w,h)
+    ui.panel.super.new(self,x,y,w or image:getWidth(),h or image:getHeight(),parent,data)
     self.image=image
     self.class=data.class
     -- copy the theme color so each image has its own color table
@@ -362,7 +362,7 @@ function ui.image:draw()
     lg.push()
     lg.translate(self.offsetX,self.offsetY)
         if debug then
-            lg.setColor(0,0,1,0.5)
+            lg.setColor(0,0,1,0.5,0.2)
             lg.rectangle("fill",self.x,self.y,self.w,self.h)
             lg.setColor(1,1,1,1)
         end
@@ -374,9 +374,12 @@ function ui.image:draw()
             lg.setColor(1,1,1,1)
         end
 
-        --lg.setShader(gradient)
-        lg.draw(self.image,self.x+self.w/2,self.y+self.h/2,self.r,1,1,self.w/2,self.h/2)
-        lg.setShader()
+        love.graphics.setBlendMode("alpha", "premultiplied")
+            local w,h=self.image:getDimensions()
+            local scale=math.min(self.w/w,self.h/h)
+            lg.draw(self.image,self.x+self.w/2,self.y+self.h/2,self.r,scale,scale,w/2,h/2)
+        love.graphics.setBlendMode("alpha")
+
         self.super.draw(self)
     lg.pop()
 end
