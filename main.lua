@@ -131,15 +131,12 @@ function love.load()
     }
 
     key=profile.steamgriddb
-
 end
 
 function love.update(dt)
     timer.update(dt)
     input:update()
     stack:update(dt)
-    --control.navigation:input()
-    --control:update(dt)
 end
 
 function love.draw()
