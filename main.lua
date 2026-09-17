@@ -92,7 +92,7 @@ function love.load()
         ui.w=vw
         cw,ch=sw,sh
     end
-
+    
     profile=json.decode(love.filesystem.read("profile.json"))
 
     love.window.setMode(ui.w,ui.h,{fullscreen=true,msaa=2})
