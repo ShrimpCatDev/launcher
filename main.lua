@@ -44,6 +44,7 @@ function getEmulator(platform)
 end
 
 function love.load()
+    love.keyboard.setKeyRepeat(true)
     love.graphics.setDefaultFilter("linear","linear")
     love.filesystem.write("README.txt","hi lol")
 
@@ -189,6 +190,7 @@ function love.keypressed(k)
     end
     if stack.items[#stack.items].hasTextInput then
         stack.items[#stack.items]:keyInput(k)
+        
     end
 end
 

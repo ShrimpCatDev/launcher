@@ -418,6 +418,66 @@ function ui.text:draw()
     lg.pop()
 end
 
+local function wrap(text,w)
+    local font=lg.getFont()
+    local lines={}
+    local c=""
+
+    for i=1,#text do
+        local char=text:sub(i,i)
+
+        if char=="\n" then
+            table.insert(lines,c)
+            c=""
+        else
+            local t=c..char
+
+            if font:getWidth(t)>w then
+                table.insert(lines,c)
+                c=char
+            else
+                c=t
+            end
+        end
+    end
+
+    if c~="" then
+        table.insert(lines,c)
+    end
+
+    return table.concat(lines,"\n")
+end
+
+--text fancy system
+ui.textf=ui.control:extend()
+
+function ui.textf:new(x,y,text,parent,data,w,h)
+    self.font=data.font or theme.font.regular
+    local s=1/globalScale
+    ui.textf.super.new(self,x,y,w or self.font:getWidth(text)*s,h or self.font:getHeight()*s,parent,data)
+    self.text=text
+end
+
+function ui.textf:draw()
+    lg.setColor(1,1,1,1)
+    lg.push()
+    lg.translate(self.offsetX,self.offsetY)
+        local font=lg.getFont()
+        lg.setFont(self.font)
+            if self.parent.highlight then
+                lg.setColor(color(theme.font.color.highlight))
+            else
+                lg.setColor(color(theme.font.color.default))
+            end
+            
+            local s=1/globalScale
+            lg.print(wrap(self.text,self.w),self.x,self.y,0,s,s)
+            lg.setColor(1,1,1,1)
+            self.super.draw(self)
+        lg.setFont(font)
+    lg.pop()
+end
+
 --custom system
 ui.custom=ui.control:extend()
 
@@ -553,11 +613,10 @@ function ui.textInput:new(parent,data)
         padding={top=p,bottom=p,left=p,right=p}
     })
 
-    local p=24
-    self.print=ui.text(0,0,self.text,self.textBox,{
+    self.print=ui.textf(0,0,self.text,self.textBox,{
         align={x="left",y="top"},
         margin={top=p,bottom=p,left=p,right=p}
-    })
+    },self.textBox.w-(p*2),self.textBox.h-(p*2))
 
     self.keyboard=ui.panel(0,0,self.w-self.padding.left-self.padding.right,ui.h/2,self,{
         align={x="center",y="bottom"}
@@ -567,14 +626,24 @@ function ui.textInput:new(parent,data)
 end
 
 function ui.textInput:keyTextInput(k)
-    self.text=self.text..k
-    self.print.text=self.text
+    if string.len(self.text)<320 then
+        self.text=self.text..k
+        self.print.text=self.text
+    end
 end
 
 function ui.textInput:keyInput(k)
     if k=="backspace" then
         self.text=string.sub(self.text,1,string.len(self.text)-1)
         self.print.text=self.text
+    end
+    if k=="return" then
+        print(string.len(self.text))
+    end
+    if k=="v" and love.keyboard.isDown("lctrl") then
+        self.text=self.text..love.system.getClipboardText()
+        self.print.text=self.text
+        print(">//~//<")
     end
 end
 
