@@ -24,23 +24,11 @@ function settings:init(parent,item)
         font=theme.font.large
     })
 
-    --[[local a=ui.text(0,0,"Scrape",self.panel,{
-        align={x="center",y="top"},
-        margin={bottom=0,top=0,left=0,right=0},
-        padding={bottom=0,top=0,left=0,right=0},
-        layout={mode="vertical",spacing=12},
-        font=theme.font.large
-    })
-    a.confirm=function(self)
-        item.img=scrape(item.name)
-    end]]
-    --self.control.navigation:item(a,1,1,true)
-
     self.button=ui.button("Scrape from SteamGridDB",self.panel,{
         align={x="center",y="center"}
     })
     self.button.press=function(self)
-        --item.img=scrape(item.name)
+        item.img=scrape(item.name)
         
     end
     self.control.navigation:item(self.button,1,1,true)

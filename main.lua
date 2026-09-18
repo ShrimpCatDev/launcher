@@ -52,7 +52,7 @@ function love.load()
 
     config=require("config")
     https=require("runtime/loader").loadHTTPS()
-    --print(https.request("https://google.com"))
+
     debug=config.debug
     object=require("lib/classic")
     assert=require("lib/inspect")
@@ -85,7 +85,7 @@ function love.load()
     ui=require("ui")
     ui:init()
 
-    local cw,ch=ui.w,ui.h
+    local cw,ch=ui.w,ui.hu
 
     if config.changeAspect then
         local sw,sh=love.window.getDesktopDimensions()
@@ -134,6 +134,8 @@ function love.load()
     }
 
     key=profile.steamgriddb
+
+    ui.textInput(control)
 end
 
 function love.update(dt)
@@ -179,10 +181,19 @@ function love.keypressed(k)
     if k=="escape" then
         love.event.quit()
     end
-    if k=="f" then
+    if k=="f" and not stack.items[#stack.items].hasTextInput then
         print("opening folder")
         love.system.setClipboardText(love.filesystem.getSaveDirectory( ))
         local suc=love.system.openURL("file://"..love.filesystem.getSaveDirectory())
         print(suc)
+    end
+    if stack.items[#stack.items].hasTextInput then
+        stack.items[#stack.items]:keyInput(k)
+    end
+end
+
+function love.textinput(k)
+    if stack.items[#stack.items].hasTextInput then
+        stack.items[#stack.items]:keyTextInput(k)
     end
 end

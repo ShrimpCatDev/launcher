@@ -537,4 +537,45 @@ function ui.button:draw()
     lg.setFont(font)
 end
 
+ui.textInput=ui.control:extend()
+
+function ui.textInput:new(parent,data)
+    self.hasTextInput=true
+    ui.textInput.super.new(self,0,0,ui.w,ui.h,parent,data)
+    local p=24
+    self.padding={top=p,bottom=p,left=p,right=p}
+    self.layout={mode="vertical",spacing=12}
+
+    self.text="hi lol"
+
+    self.textBox=ui.panel(0,0,self.w-self.padding.left-self.padding.right,ui.h/2-48-12,self,{
+        align={x="center",y="top"},
+        padding={top=p,bottom=p,left=p,right=p}
+    })
+
+    local p=24
+    self.print=ui.text(0,0,self.text,self.textBox,{
+        align={x="left",y="top"},
+        margin={top=p,bottom=p,left=p,right=p}
+    })
+
+    self.keyboard=ui.panel(0,0,self.w-self.padding.left-self.padding.right,ui.h/2,self,{
+        align={x="center",y="bottom"}
+    })
+
+    stack:add(self)
+end
+
+function ui.textInput:keyTextInput(k)
+    self.text=self.text..k
+    self.print.text=self.text
+end
+
+function ui.textInput:keyInput(k)
+    if k=="backspace" then
+        self.text=string.sub(self.text,1,string.len(self.text)-1)
+        self.print.text=self.text
+    end
+end
+
 return ui
