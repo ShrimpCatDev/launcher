@@ -282,12 +282,17 @@ function ui.panel:draw()
     lg.push()
     lg.translate(self.offsetX,self.offsetY)
         local rad=32
-        if self.class and self.class=="bar" then
-            rad=(self.h*(theme.panel.radius/100))*0.5
-            if self.h>self.w then
-                rad=(self.w *(theme.panel.radius/100))*0.5
+        if not self.data.radius then
+            if self.class and self.class=="bar" then
+                rad=(self.h*(theme.panel.radius/100))*0.5
+                if self.h>self.w then
+                    rad=(self.w *(theme.panel.radius/100))*0.5
+                end
             end
+        else
+            rad=self.data.radius
         end
+        
 
         --[[if self.shadow and then
             lg.setColor(color(theme.shadow.color,theme.shadow.opacity))
@@ -445,7 +450,7 @@ local function wrap(text,w)
         table.insert(lines,c)
     end
 
-    return table.concat(lines,"\n")
+    return table.concat(lines,"\n"),lines
 end
 
 --text fancy system
@@ -466,13 +471,23 @@ function ui.textf:draw()
         lg.setFont(self.font)
             if self.parent.highlight then
                 lg.setColor(color(theme.font.color.highlight))
+            elseif self.data.color then
+                lg.setColor(self.data.color)
             else
                 lg.setColor(color(theme.font.color.default))
             end
             
             local s=1/globalScale
-            lg.print(wrap(self.text,self.w),self.x,self.y,0,s,s)
-            lg.setColor(1,1,1,1)
+            local t,l=wrap(self.text,self.w)
+            lg.print(t,self.x,self.y,0,s,s)
+
+            if self.data.cursor then
+                lg.setColor(color(theme.widget.color.blank,math.cos(love.timer.getTime()*4)+0.2))
+                    local w=8
+                    lg.rectangle("fill",font:getWidth(l[#l] or "")+font:getHeight()+2-self.x,font:getHeight()*(math.max(#l,1))-self.y,w,font:getHeight(),w/2,w/2)
+                lg.setColor(1,1,1,1)
+            end
+
             self.super.draw(self)
         lg.setFont(font)
     lg.pop()
@@ -602,31 +617,36 @@ ui.textInput=ui.control:extend()
 function ui.textInput:new(parent,data)
     self.hasTextInput=true
     ui.textInput.super.new(self,0,0,ui.w,ui.h,parent,data)
-    local p=24
+    local p=12
     self.padding={top=p,bottom=p,left=p,right=p}
     self.layout={mode="vertical",spacing=12}
 
     self.text="hi lol"
 
-    self.textBox=ui.panel(0,0,self.w-self.padding.left-self.padding.right,ui.h/2-48-12,self,{
+    self.textBox=ui.panel(0,0,self.w-self.padding.left-self.padding.right,ui.h/2-48,self,{
         align={x="center",y="top"},
-        padding={top=p,bottom=p,left=p,right=p}
+        padding={top=p,bottom=p,left=p,right=p},
+        radius=10
     })
+    self.textBox.data.color=color(theme.widget.color.highlight)
 
     self.print=ui.textf(0,0,self.text,self.textBox,{
         align={x="left",y="top"},
-        margin={top=p,bottom=p,left=p,right=p}
+        margin={top=p,bottom=p,left=p,right=p},
+        cursor=true,
+        color=color(theme.widget.color.blank)
     },self.textBox.w-(p*2),self.textBox.h-(p*2))
 
     self.keyboard=ui.panel(0,0,self.w-self.padding.left-self.padding.right,ui.h/2,self,{
-        align={x="center",y="bottom"}
+        align={x="center",y="bottom"},
+        radius=10
     })
 
     stack:add(self)
 end
 
 function ui.textInput:keyTextInput(k)
-    if string.len(self.text)<320 then
+    if string.len(self.text)<280 then
         self.text=self.text..k
         self.print.text=self.text
     end

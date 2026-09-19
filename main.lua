@@ -136,7 +136,7 @@ function love.load()
 
     key=profile.steamgriddb
 
-    ui.textInput(control)
+   -- ui.textInput(control)
 end
 
 function love.update(dt)
