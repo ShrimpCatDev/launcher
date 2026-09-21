@@ -1,0 +1,13 @@
+{
+    "id": "Text",
+    "name": "Text",
+
+    "extensions": [
+        "txt",
+        "md"
+    ],
+
+    "emulator": {
+        "backend": "notepad"
+    }
+}

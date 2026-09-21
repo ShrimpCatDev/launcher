@@ -1,0 +1,10 @@
+{
+    "id":"notepad",
+    "name":"NotePad",
+
+    "command": "kwrite",
+
+    "args": [
+        "{rom}"
+    ]
+}
