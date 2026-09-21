@@ -690,4 +690,11 @@ function ui.textInput:keyInput(k)
     end
 end
 
+function ui.textInput:draw()
+    lg.setColor(0,0,0,0.2)
+    lg.rectangle("fill",0,0,ui.w,ui.h)
+    lg.setColor(1,1,1,1)
+    self.super.draw(self)
+end
+
 return ui
