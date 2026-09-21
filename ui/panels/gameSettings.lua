@@ -42,7 +42,7 @@ function settings:init(parent,item)
             local dir=love.filesystem.getSaveDirectory()
             os.rename(dir.."/icons/"..old..".png",dir.."/icons/"..t..".png")
             --print(dir.."/icons/"..old..".png")
-            item.parent:updateList()
+            item.parent:updateList(item)
         end)
     end
     self.control.navigation:item(self.button,1,1,true)

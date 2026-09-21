@@ -65,11 +65,12 @@ function home:init(parent)
 
     self.selectionMenu.focus=function(self)
         timer.tween(0.3,self.items[self.data.selection+1],{scale=self.sb},"out-back")
-    endt,msa
+    end
 
-    local firstTime=true
-    self.updateList=function(self)
+    self.first=true
+    self.updateList=function(self,sel)
         self.selectionMenu.items={}
+        self.selectionMenu.data.selection=0
         local path=profile.roms
         local roms=fs:scanFiles(path)
         for k,v in ipairs(roms) do
@@ -85,14 +86,19 @@ function home:init(parent)
                 img=love.graphics.newImage(data,{mipmaps=true})
             end
 
-            table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,path=path..v,platform=p,raw=v,root=path,extension=ext,parent=self})
-            
-            self.selectionMenu.data.selection=0
-            if firstTime then
-                firstTime=false
-            else
-                timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.sb},"out-back")
+            table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,path=path..v,platform=p,raw=v,root=path,extension=ext,parent=self,index=k})
+
+            if sel and self.selectionMenu.items[#self.selectionMenu.items].name==sel.name then
+                self.selectionMenu.data.selection=k-1
             end
+        end
+
+        
+        if self.first then
+            self.first=false
+        else
+            print("TRIGGERED")
+            timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
         end
     end
     self:updateList()
