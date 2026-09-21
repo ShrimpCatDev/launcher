@@ -97,9 +97,14 @@ function home:init(parent)
         if self.first then
             self.first=false
         else
-            print("TRIGGERED")
             timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
+            self.selectedText.text=self.selectionMenu.items[self.selectionMenu.data.selection+1].name
+            self.selectedText.w=self.selectedText.font:getWidth(self.selectionMenu.items[self.selectionMenu.data.selection+1].name)/globalScale
+            self.selectedText:updateLayout()
+            self.selected:updateLayout()
         end
+
+        
     end
     self:updateList()
 
