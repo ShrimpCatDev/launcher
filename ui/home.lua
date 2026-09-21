@@ -65,7 +65,7 @@ function home:init(parent)
 
     self.selectionMenu.focus=function(self)
         timer.tween(0.3,self.items[self.data.selection+1],{scale=self.sb},"out-back")
-    end
+    endt,msa
 
     local firstTime=true
     self.updateList=function(self)

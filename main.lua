@@ -98,7 +98,7 @@ function love.load()
     
     profile=json.decode(love.filesystem.read("profile.json"))
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=false,msaa=2})
+    love.window.setMode(ui.w,ui.h,{fullscreen=true,msaa=2})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
@@ -155,7 +155,7 @@ function love.draw()
         lg.draw(i,w/2,h/2,0,s,s,i:getWidth()/2,i:getHeight()/2)
     end
 
-    ui.elements.home.bg:draw()
+    --ui.elements.home.bg:draw()
 
     lg.setCanvas{uiCanvas,stencil=true}
         lg.push()

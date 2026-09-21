@@ -483,13 +483,14 @@ function ui.textf:draw()
             end
             
             local s=1/globalScale
-            local t,l=wrap(self.text,self.w)
+            local t,l=wrap(self.text,self.w*globalScale)
             lg.print(t,self.x,self.y,0,s,s)
 
             if self.data.cursor then
                 lg.setColor(color(theme.widget.color.blank,math.cos(love.timer.getTime()*4)+0.2))
                     local w=8
-                    lg.rectangle("fill",font:getWidth(l[#l] or "")+font:getHeight()+2-self.x,font:getHeight()*(math.max(#l,1))-self.y,w,font:getHeight(),w/2,w/2)
+                    local ww,hh=font:getWidth(l[#l] or "")*s,font:getHeight()*s
+                    lg.rectangle("fill",ww+hh+2-self.x,hh*(math.max(#l,1))-self.y,w,font:getHeight()*s,w/2,w/2)
                 lg.setColor(1,1,1,1)
             end
 
@@ -663,6 +664,7 @@ function ui.textInput:update(dt)
         self.hidden=true
         stack:remove(self)
         self=nil
+        input:update()
     end
 end
 
