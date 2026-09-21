@@ -62,7 +62,8 @@ function ui.navigation:new()
     self.selected={row=1,col=1}
 end
 
-function ui.navigation:item(item,col,row,default)
+function ui.navigation:item(item,colu,row,default)
+    local col=colu or #self.nav
     self.nav[col] = self.nav[col] or {}
     if not self.navPos[col] then self.navPos[col]=row or 1 end
 
@@ -79,7 +80,7 @@ function ui.navigation:item(item,col,row,default)
 end
 
 function ui.navigation:input()
-    local p=input:pressed("right") or input:pressed("left") or input:pressed("up") or input:pressed("down") or input:pressed("confirm")
+    local p=input:pressed("back") or input:pressed("right") or input:pressed("left") or input:pressed("up") or input:pressed("down") or input:pressed("confirm")
 
     if not p or #self.nav<1 then return end
 
@@ -102,6 +103,10 @@ function ui.navigation:input()
         self.selected.col=self.selected.col-1
 
         --self.selected.row=self.navPos[self.selected.col]
+    end
+
+    if input:pressed("back") then
+        if self.nav[self.selected.col][self.selected.row].exit then self.nav[self.selected.col][self.selected.row]:exit() end
     end
 
     if input:pressed("confirm") then
@@ -196,7 +201,7 @@ function ui.control:updateLayout()
 
     if self.parent then 
         w=self.parent.w
-        h=self.parent.h 
+        h=self.parent.h
     end
 
     if self.align.x=="left" then
@@ -614,14 +619,14 @@ end
 
 ui.textInput=ui.control:extend()
 
-function ui.textInput:new(parent,data)
+function ui.textInput:new(parent,output,data)
     self.hasTextInput=true
     ui.textInput.super.new(self,0,0,ui.w,ui.h,parent,data)
     local p=12
     self.padding={top=p,bottom=p,left=p,right=p}
     self.layout={mode="vertical",spacing=12}
 
-    self.text="hi lol"
+    self.text=""
 
     self.textBox=ui.panel(0,0,self.w-self.padding.left-self.padding.right,ui.h/2-48,self,{
         align={x="center",y="top"},
@@ -642,7 +647,23 @@ function ui.textInput:new(parent,data)
         radius=10
     })
 
+    self.setOutput=function(self)
+        if output then output(self.text) end
+        input:update()
+        self.hidden=true
+        stack:remove(self)
+        self=nil
+    end
+
     stack:add(self)
+end
+
+function ui.textInput:update(dt)
+    if input:pressed("back") and stack.items[#stack.items]==self then
+        self.hidden=true
+        stack:remove(self)
+        self=nil
+    end
 end
 
 function ui.textInput:keyTextInput(k)
@@ -658,7 +679,7 @@ function ui.textInput:keyInput(k)
         self.print.text=self.text
     end
     if k=="return" then
-        print(string.len(self.text))
+        self:setOutput()
     end
     if k=="v" and love.keyboard.isDown("lctrl") then
         self.text=self.text..love.system.getClipboardText()

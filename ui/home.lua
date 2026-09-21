@@ -67,25 +67,35 @@ function home:init(parent)
         timer.tween(0.3,self.items[self.data.selection+1],{scale=self.sb},"out-back")
     end
 
-    local path=profile.roms
-    local roms=fs:scanFiles(path)
-    for k,v in ipairs(roms) do
-        local name=v:match("(.+)%..+$")
-        local ext=v:match("%.(.+)$")
-        local p=getPlatform(ext)
-        print(p and p.id or nil)
+    local firstTime=true
+    self.updateList=function(self)
+        self.selectionMenu.items={}
+        local path=profile.roms
+        local roms=fs:scanFiles(path)
+        for k,v in ipairs(roms) do
+            local name=v:match("(.+)%..+$")
+            local ext=v:match("%.(.+)$")
+            local p=getPlatform(ext)
 
-        local img=theme.games.default
-        local contents,size=love.filesystem.read("icons/"..name..".png")
+            local img=theme.games.default
+            local contents,size=love.filesystem.read("icons/"..name..".png")
 
-        if contents then
-            local data=love.image.newImageData(love.filesystem.newFileData(contents,size))
-            img=love.graphics.newImage(data,{mipmaps=true})
+            if contents then
+                local data=love.image.newImageData(love.filesystem.newFileData(contents,size))
+                img=love.graphics.newImage(data,{mipmaps=true})
+            end
+
+            table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,path=path..v,platform=p,raw=v,root=path,extension=ext,parent=self})
+            
+            self.selectionMenu.data.selection=0
+            if firstTime then
+                firstTime=false
+            else
+                timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.sb},"out-back")
+            end
         end
-
-        table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,path=path..v,platform=p})
     end
-    --timer.tween(0.3,self.selectionMenu.items[self.selectionMenu.data.selection+1],{scale=self.selectionMenu.sb},"out-back")
+    self:updateList()
 
     self.selectionMenu.menuDraw=0
 
