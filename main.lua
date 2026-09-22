@@ -188,7 +188,6 @@ function love.keypressed(k)
     end
     if stack.items[#stack.items].hasTextInput then
         stack.items[#stack.items]:keyInput(k)
-        
     end
     if k=="f1" and not stack.items[#stack.items].hasTextInput then
         print("opening keyboard!")

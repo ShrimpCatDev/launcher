@@ -95,7 +95,9 @@ function stats:init(parent)
             lg.draw(self.chargeImg,self.x,self.y,0,scale,scale)
         end
 
-        if percent>=40 then
+        if state=="charged" then
+            lg.setColor(color(theme.widget.color.battery.charged))
+        elseif percent>=40 then
             lg.setColor(color(theme.widget.color.battery.full))
         elseif percent >=20 then
             lg.setColor(color(theme.widget.color.battery.low))

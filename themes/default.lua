@@ -54,6 +54,7 @@ return {
             text="#ffffff",
 
             battery={
+                charged="#7ae449",
                 full="#60BDFF",
                 low="#fac32b",
                 empty="#f03860"
