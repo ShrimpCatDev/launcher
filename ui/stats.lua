@@ -88,7 +88,12 @@ function stats:init(parent)
         local w,h=self.img:getDimensions()
         local scale=math.min(self.w/w,self.h/h)
 
-        state, percent, seconds = love.system.getPowerInfo()
+        local state, percent, seconds = love.system.getPowerInfo()
+
+        lg.setColor(color(theme.widget.color.regular))
+        if state=="charging" or state=="charged" then
+            lg.draw(self.chargeImg,self.x,self.y,0,scale,scale)
+        end
 
         if percent>=40 then
             lg.setColor(color(theme.widget.color.battery.full))
@@ -101,6 +106,20 @@ function stats:init(parent)
         lg.rectangle("fill",self.x+3,self.y+2,self.bmw*(percent/100),self.h-4)
         lg.setColor(color(theme.widget.color.regular))
             lg.draw(self.img,self.x,self.y,0,scale,scale)
+        
+        lg.setColor(color(theme.widget.color.blank))
+
+        lg.stencil(function()
+            lg.rectangle("fill",self.x+3,self.y+2,self.bmw*(percent/100),self.h-4)
+        end,"replace",1)
+
+        lg.setStencilTest("greater",0)
+            if state=="charging" or state=="charged" then
+                love.graphics.setBlendMode("alpha", "premultiplied")
+                lg.draw(self.chargeImg,self.x,self.y,0,scale,scale)
+                love.graphics.setBlendMode("alpha")
+            end
+        lg.setStencilTest()
         lg.setColor(1,1,1,1)
     end,self.stats,{
         align={x="left",y="center"},
@@ -108,6 +127,7 @@ function stats:init(parent)
     })
 
     self.battery.img=lg.newImage("assets/icons/battery.png",{mipmaps=true})
+    self.battery.chargeImg=lg.newImage("assets/icons/batteryCharge.png",{mipmaps=true})
     self.battery.bmw=self.battery.w-9
 
     self.clock=ui.text(0,0,"00:00",self.stats,{
