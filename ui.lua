@@ -621,6 +621,7 @@ end
 ui.textInput=ui.control:extend()
 
 function ui.textInput:new(parent,output,data)
+    self.keys=require("data/keyboard")
     self.hasTextInput=true
     ui.textInput.super.new(self,0,0,ui.w,ui.h,parent,data)
     local p=12
@@ -648,6 +649,35 @@ function ui.textInput:new(parent,output,data)
         radius=10
     })
 
+    self.keyDisplay=ui.custom(0,0,self.keyboard.w,self.keyboard.h,function(self2)
+        local font=lg.getFont()
+        for i,j in ipairs(self.keys.regular) do
+            for k,v in ipairs(j) do
+                local w=48
+                local s=12
+                local x=(k-1)*(w+s)+6
+                local y=(i-1)*(w+s)+6
+
+                lg.setColor(0,0,0,1)
+                if k==self2.sel.x and i==self2.sel.y then
+                    lg.setColor(1,0,0,1)
+                end
+                lg.rectangle("fill",x,y,w,w,12,12)
+                lg.setColor(1,1,1,1)
+
+                local t=v
+                if self.capsLock and not self.keys.special[v] then
+                    t=string.upper(v)
+                end
+
+                lg.print(t,x+6,y+6)
+            end
+        end
+    end,self.keyboard,{})
+    self.keyDisplay.sel={x=1,y=1}
+    self.keyDisplay.capsLock=false
+
+
     self.setOutput=function(self)
         if output then output(self.text) end
         input:update()
@@ -664,6 +694,43 @@ function ui.textInput:update(dt)
         self.hidden=true
         stack:remove(self)
         self=nil
+        input:update()
+    end
+
+    if stack.items[#stack.items]==self then
+        if input:pressed("keytoggle") then
+            self.capsLock=not self.capsLock
+            print("toggleness")
+            print(self.capsLock)
+        end
+        if input:pressed("keyconfirm") then
+            local c=self.keys.regular[self.keyDisplay.sel.y][self.keyDisplay.sel.x]
+
+            if self.keys.special[c] then
+                local t=self.keys.special[c].raw
+                
+                if self.keys.special[c].func then self.keys.special[c].func(self) end
+            else
+                if self.capsLock then
+                    c=string.upper(c)
+                end
+                self:keyTextInput(c)
+            end
+        end
+        local s=self.keyDisplay.sel
+        if input:pressed("keyup") then
+            s.y=s.y-1
+        end
+        if input:pressed("keydown") then
+            s.y=s.y+1
+        end
+        if input:pressed("keyleft") then
+            s.x=s.x-1
+        end
+        if input:pressed("keyright") then
+            s.x=s.x+1
+        end
+        
         input:update()
     end
 end

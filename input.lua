@@ -8,7 +8,14 @@ input=baton.new{
         down = {'key:down', 'key:s', 'axis:lefty+', 'button:dpdown'},
         confirm = {'key:z', 'button:a'},
         back = {'key:x', 'button:b'},
-        options= {'key:return', 'button:start'}
+        options= {'key:return', 'button:start'},
+
+        keyleft = {'axis:leftx-', 'button:dpleft'},
+        keyright = {'axis:leftx+', 'button:dpright'},
+        keyup = {'axis:lefty-', 'button:dpup'},
+        keydown = {'axis:lefty+', 'button:dpdown'},
+        keyconfirm = {'button:a'},
+        keytoggle = {'button:x'}
     },
     joystick = love.joystick.getJoysticks()[1],
 }
