@@ -161,11 +161,11 @@ function home:init(parent)
             for k,v in ipairs(e.args) do
                 c=c.." "..v
             end
+
             if e.cores and item.platform.emulator.core then
-                c=string.gsub(c,"{core}",e.cores)..item.platform.emulator.core
+                c=string.gsub(c,"{core}",e.cores..item.platform.emulator.core)
             end
             c=string.gsub(c,"{rom}",'"'..item.path..'"')
-            print(c)
         end
         
         os.execute(c)
