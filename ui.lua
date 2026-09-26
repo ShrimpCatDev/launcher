@@ -304,15 +304,17 @@ function ui.panel:draw()
             lg.rectangle("fill",self.x+theme.shadow.offset.x,self.y+theme.shadow.offset.y,self.w,self.h,rad,rad)
         end]]
 
+        --local st=lg.setStencilTest or lg.setStencilTest
+
         if self.highlight then
             lg.setShader(gradient)
                 lg.stencil(function()
                     lg.rectangle("fill",self.x,self.y,self.w,self.h,rad,rad)
                 end,"replace",1)
 
-                lg.setStencilTest("greater", 0)
+                stencil("greater", 0)
                     lg.draw(self.highlightCanvas,self.x,self.y)
-                lg.setStencilTest()
+                stencil()
             lg.setShader()
 
 
@@ -621,7 +623,7 @@ end
 ui.textInput=ui.control:extend()
 
 function ui.textInput:new(parent,output,data)
-    self.keys=require("data/keyboard")
+    self.keys=require("data.keyboard")
     self.hasTextInput=true
     ui.textInput.super.new(self,0,0,ui.w,ui.h,parent,data)
     local p=12

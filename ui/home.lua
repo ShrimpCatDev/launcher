@@ -143,7 +143,7 @@ function home:init(parent)
             end
 
             if input:pressed("options") then
-                local s=require("ui/panels/gameSettings"):init(control,self.items[self.data.selection+1])
+                local s=require("ui.panels.gameSettings"):init(control,self.items[self.data.selection+1])
             end
         end
         self.menuDraw=lerpDt(self.menuDraw,-self.data.selection*(128+self.layout.spacing),18,dt)

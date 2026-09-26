@@ -1,4 +1,4 @@
-local baton=require("lib/baton")
+local baton=require("lib.baton")
 
 input=baton.new{
     controls={

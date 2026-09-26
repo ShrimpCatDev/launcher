@@ -1,10 +1,15 @@
+love.setDeprecationOutput(false)
+
 lg=love.graphics
+version=love.getVersion()
+stencil=lg.setStencilTest
+
 
 function pixel(targetSize,currentSize)
     return targetSize/currentSize
 end
 
-json=require("lib/json")
+json=require("lib.json")
 
 local e=love.filesystem.getDirectoryItems("data/emulators")
 emulators={}
@@ -44,21 +49,27 @@ function getEmulator(platform)
 end
 
 function love.load()
+    
     love.keyboard.setKeyRepeat(true)
     love.graphics.setDefaultFilter("linear","linear")
     love.filesystem.write("README.txt","hi lol")
 
-    nativefs=require("lib/nativefs")
+    nativefs=require("lib.nativefs")
     fs=require("fs")
 
     config=require("config")
-    https=require("runtime/loader").loadHTTPS()
+
+    if version==12 then
+        https=require("https")
+    else
+        https=require("runtime.loader").loadHTTPS()
+    end
 
     debug=config.debug
-    object=require("lib/classic")
-    assert=require("lib/inspect")
+    object=require("lib.classic")
+    assert=require("lib.inspect")
 
-    timer=require("lib/hump/timer")
+    timer=require("lib.hump.timer")
 
     require("input")
 
@@ -98,7 +109,7 @@ function love.load()
     
     profile=json.decode(love.filesystem.read("profile.json"))
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=false,msaa=2})
+    love.window.setMode(ui.w,ui.h,{fullscreen=true,msaa=2})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
@@ -130,8 +141,8 @@ function love.load()
     stack:add(control)
 
     ui.elements={
-        home=require("ui/home"):init(control),
-        stats=require("ui/stats"):init(control)
+        home=require("ui.home"):init(control),
+        stats=require("ui.stats"):init(control)
     }
 
     key=profile.steamgriddb

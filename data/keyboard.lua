@@ -18,7 +18,4 @@ return{
         {"z","x","c","v","b","n","m"},
         {"Caps","Space","Enter"}
     },
-    caps={
-
-    }
 }
