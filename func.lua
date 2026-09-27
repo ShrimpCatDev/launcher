@@ -24,6 +24,7 @@ function lerpDt(current,target,speed,dt)
 end
 
 function scrape(game)
+    if not json then json=require("lib.json") end
     local name=string.gsub(game," ","_")
     name=string.gsub(name,"'","")
     name=string.gsub(name,'"',"")
@@ -64,7 +65,7 @@ function scrape(game)
         local contents,size=love.filesystem.read("icons/"..game..".png")
         if contents then
             local data=love.image.newImageData(love.filesystem.newFileData(contents,size))
-            return love.graphics.newImage(data)
+            return data--love.graphics.newImage(data)
         end
     end
 end

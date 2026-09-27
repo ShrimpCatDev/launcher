@@ -68,7 +68,7 @@ function love.load()
     debug=config.debug
     object=require("lib.classic")
     assert=require("lib.inspect")
-
+    
     timer=require("lib.hump.timer")
 
     require("input")
@@ -109,7 +109,7 @@ function love.load()
     
     profile=json.decode(love.filesystem.read("profile.json"))
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=true,msaa=2})
+    love.window.setMode(ui.w,ui.h,{fullscreen=false,msaa=2})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
@@ -146,6 +146,17 @@ function love.load()
     }
 
     key=profile.steamgriddb
+
+    local code=[[
+        key=...
+        https=require("https")
+        require("func")
+        require("love.image")
+        require("love.system")
+        scrape("Super Mario Bros")
+    ]]
+    local thread=love.thread.newThread(code)
+    thread:start(key)
 end
 
 function love.update(dt)
