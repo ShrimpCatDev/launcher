@@ -100,7 +100,7 @@ function home:init(parent)
         selection=0
     })
     self.selectionMenu.items={}
-    self.selectionMenu.s=128
+    self.selectionMenu.s=132
     self.selectionMenu.sb=192
 
     self.selectionMenu.unfocus=function(self)
@@ -203,7 +203,7 @@ function home:init(parent)
                 local s=require("ui.panels.gameSettings"):init(control,self.items[self.data.selection+1])
             end
         end
-        self.menuDraw=lerpDt(self.menuDraw,-self.data.selection*(128+self.layout.spacing),18,dt)
+        self.menuDraw=lerpDt(self.menuDraw,-self.data.selection*(self.s+self.layout.spacing),18,dt)
     end
 
     --flatpak run org.libretro.RetroArch -L ~/.var/app/org.libretro.RetroArch/config/retroarch/cores/mgba_libretro.so "/home/joseph/Desktop/romz/Pokemon - Emerald Version.gba"

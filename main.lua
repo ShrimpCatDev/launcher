@@ -184,7 +184,7 @@ function love.draw()
     lg.setCanvas()
     
     love.graphics.setBlendMode("alpha", "premultiplied")
-        lg.setColor(0,0,0,0.1)
+        lg.setColor(color(theme.shadow.color,theme.shadow.opacity))
             love.graphics.draw(uiCanvas,2*globalScale,4*globalScale)
         lg.setColor(1,1,1,1)
             love.graphics.draw(uiCanvas)

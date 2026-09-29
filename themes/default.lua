@@ -25,7 +25,7 @@ return {
                 color="#60BDFF",
                 gradient={
                     "#60BDFF",
-                    "#9be95b"
+                    "#A8E475"
                 }
             }
         },
@@ -54,7 +54,7 @@ return {
             text="#ffffff",
 
             battery={
-                charged="#7ae449",
+                charged="#A8E475",
                 full="#60BDFF",
                 low="#fac32b",
                 empty="#f03860"
@@ -64,7 +64,7 @@ return {
 
     shadow={
         color="#000000",
-        opacity=0.2,
+        opacity=0.25,
         offset={x=2*globalScale,y=4*globalScale}
     },
 
