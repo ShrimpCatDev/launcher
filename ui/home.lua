@@ -1,23 +1,67 @@
 local home={}
 
 function home:init(parent)
-    self.bg=ui.custom(0,0,ui.w,ui.h-100,function(self)
+
+    self.bg=ui.custom(0,0,ui.w,ui.h-120,function(self)
         lg.draw(self.mesh,self.x,self.y)
     end,parent,{
         align={x="center",y="bottom"}
     })
 
-    self.bg.img=lg.newImage("assets/default.png",{mipmaps=true})
     local w,h=self.bg.w,self.bg.h
+    local bw,bh=1,1
+    local imageRatio=bw/bh
+    local areaRatio=w/h
+    local u0,u1,v0,v1=0,1,0,1
+
+    if imageRatio>areaRatio then
+        local visibleWidth=areaRatio/imageRatio
+        u0=(1-visibleWidth)/2
+        u1=1-u0
+    else
+        local visibleHeight=imageRatio/areaRatio
+        v0=(1-visibleHeight)/2
+        v1=1-v0
+    end
+
     local vertices = {
-        {0, 0,    0, 0,   1, 1, 1, 0},
-        {w, 0,    1, 0,   1, 1, 1, 0},
-        {w, h,    1, 1,   1, 1, 1, 1 },
-        {0, h,    0, 1,   1, 1, 1, 1 }
+        {0, 0,    u0, v0,   1, 1, 1, 0},
+        {w, 0,    u1, v0,   1, 1, 1, 0},
+        {w, h,    u1, v1,   1, 1, 1, 1 },
+        {0, h,    u0, v1,   1, 1, 1, 1 }
     }
     self.bg.mesh=lg.newMesh(vertices,"fan","static")
-    self.bg.mesh:setTexture(self.bg.img)
     self.bg.hidden=true
+
+    self.bg.updateImage=function(self,img)
+        local w,h=self.w,self.h
+        local bw,bh=self.w,self.h
+        if img then
+            bw,bh=img:getWidth(),img:getHeight()
+        end
+        local imageRatio=bw/bh
+        local areaRatio=w/h
+        local u0,u1,v0,v1=0,1,0,1
+
+        if imageRatio>areaRatio then
+            local visibleWidth=areaRatio/imageRatio
+            u0=(1-visibleWidth)/2
+            u1=1-u0
+        else
+            local visibleHeight=imageRatio/areaRatio
+            v0=(1-visibleHeight)/2
+            v1=1-v0
+        end
+
+        local vertices = {
+            {0, 0,    u0, v0,   1, 1, 1, 0},
+            {w, 0,    u1, v0,   1, 1, 1, 0},
+            {w, h,    u1, v1,   1, 1, 1, 1 },
+            {0, h,    u0, v1,   1, 1, 1, 1 }
+        }
+        self.mesh:setVertices(vertices)
+        self.mesh:setTexture(img)
+    end
 
     self.selected=ui.panel(0,0,300,60,parent,{
         align={x="center",y="center"},
@@ -86,7 +130,18 @@ function home:init(parent)
                 img=love.graphics.newImage(data,{mipmaps=true})
             end
 
-            table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,path=path..v,platform=p,raw=v,root=path,extension=ext,parent=self,index=k})
+            local hero=nil
+            local contents,size=love.filesystem.read("heros/"..name..".png")
+            if not contents then
+                contents,size=love.filesystem.read("heros/"..name..".jpg")
+            end
+
+            if contents then
+                local data=love.image.newImageData(love.filesystem.newFileData(contents,size))
+                hero=love.graphics.newImage(data,{mipmaps=true})
+            end
+
+            table.insert(self.selectionMenu.items,{scale=self.selectionMenu.s,name=name,img=img,hero=hero,path=path..v,platform=p,raw=v,root=path,extension=ext,parent=self,index=k})
 
             if sel and self.selectionMenu.items[#self.selectionMenu.items].name==sel.name then
                 self.selectionMenu.data.selection=k-1
@@ -141,6 +196,8 @@ function home:init(parent)
                 se.selected:updateLayout()
                 sfx.nav:play()
             end
+
+            se.bg:updateImage(self.items[self.data.selection+1].hero)
 
             if input:pressed("options") then
                 local s=require("ui.panels.gameSettings"):init(control,self.items[self.data.selection+1])

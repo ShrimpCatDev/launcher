@@ -170,7 +170,10 @@ function love.draw()
         lg.draw(i,w/2,h/2,0,s,s,i:getWidth()/2,i:getHeight()/2)
     end
 
-    --ui.elements.home.bg:draw()
+    lg.push()
+        lg.scale(pixel(w,ui.w))
+        ui.elements.home.bg:draw()
+    lg.pop()
 
     lg.setCanvas{uiCanvas,stencil=true}
         lg.push()
