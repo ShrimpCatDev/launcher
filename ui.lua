@@ -689,6 +689,7 @@ function ui.textInput:new(parent,output,data)
     end
 
     stack:add(self)
+    input:update()
 end
 
 function ui.textInput:update(dt)
@@ -710,6 +711,10 @@ function ui.textInput:update(dt)
 
             if self.keys.special[c] then
                 local t=self.keys.special[c].raw
+
+                if t~="" then
+                    self:keyTextInput(t)
+                end
                 
                 if self.keys.special[c].func then self.keys.special[c].func(self) end
             else

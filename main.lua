@@ -49,7 +49,7 @@ function getEmulator(platform)
 end
 
 function love.load()
-    
+    love.keyboard.setTextInput(true)
     love.keyboard.setKeyRepeat(true)
     love.graphics.setDefaultFilter("linear","linear")
     love.filesystem.write("README.txt","hi lol")
@@ -109,7 +109,7 @@ function love.load()
     
     profile=json.decode(love.filesystem.read("profile.json"))
 
-    love.window.setMode(ui.w,ui.h,{fullscreen=false,msaa=2})
+    love.window.setMode(ui.w,ui.h,{fullscreen=config.fullscreen,msaa=2})
 
     uiCanvas=lg.newCanvas(cw,ch,{
         format = "rgba8",
@@ -210,11 +210,13 @@ function love.keypressed(k)
             print(t)
         end)
     end
+    if k=="f1" then
+        love.event.restart()
+    end
 end
 
 function love.textinput(k)
     if stack.items[#stack.items].hasTextInput then
         stack.items[#stack.items]:keyTextInput(k)
     end
-    
 end

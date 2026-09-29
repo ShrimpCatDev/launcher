@@ -1,4 +1,5 @@
 return {
     changeAspect=true,
-    debug=false
+    debug=false,
+    fullscreen=true
 }
