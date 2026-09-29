@@ -60,12 +60,12 @@ function scrape(game)
 
         print("downloading icon!")
         local code,result=https.request(imgUrl)
-        local file=love.filesystem.write("icons/"..game..".png",result)
+        --local file=love.filesystem.write("icons/"..game..".png",result)
 
-        local contents,size=love.filesystem.read("icons/"..game..".png")
-        if contents then
-            local data=love.image.newImageData(love.filesystem.newFileData(contents,size))
+        --local contents,size=love.filesystem.read("icons/"..game..".png")
+        --if contents then
+            local data=love.filesystem.newFileData(result,"icon.png")
             return data--love.graphics.newImage(data)
-        end
+        --end
     end
 end

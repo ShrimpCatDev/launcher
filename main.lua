@@ -97,7 +97,7 @@ function love.load()
     ui=require("ui")
     ui:init()
 
-    local cw,ch=ui.w,ui.hu
+    local cw,ch=ui.w,ui.h
 
     if config.changeAspect then
         local sw,sh=love.window.getDesktopDimensions()
@@ -147,22 +147,15 @@ function love.load()
 
     key=profile.steamgriddb
 
-    local code=[[
-        key=...
-        https=require("https")
-        require("func")
-        require("love.image")
-        require("love.system")
-        scrape("Super Mario Bros")
-    ]]
-    local thread=love.thread.newThread(code)
-    thread:start(key)
+    scraper=require("utils.scrape")
+    scraper:init()
 end
 
 function love.update(dt)
     timer.update(dt)
     input:update()
     stack:update(dt)
+    scraper:update(dt)
 end
 
 function love.draw()

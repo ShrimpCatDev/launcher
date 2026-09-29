@@ -51,7 +51,12 @@ function settings:init(parent,item)
         align={x="center",y="center"}
     })
     self.button.press=function(self)
-        item.img=scrape(item.name)
+        scraper:start(item.name,function(img)
+            local file=love.filesystem.write("icons/"..item.name..".png",img)
+            local image=love.image.newImageData(img)
+            item.img=lg.newImage(image)
+            print("scraped t! ta!")
+        end)
     end
     self.control.navigation:item(self.button,2)
 
