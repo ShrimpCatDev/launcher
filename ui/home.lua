@@ -3,7 +3,11 @@ local home={}
 function home:init(parent)
 
     self.bg=ui.custom(0,0,ui.w,ui.h-120,function(self)
+        lg.setColor(1,1,1,self.mOpacity)
         lg.draw(self.mesh,self.x,self.y)
+        
+        lg.setColor(1,1,1,self.pOpacity)
+        lg.draw(self.meshPrev,self.x,self.y)
     end,parent,{
         align={x="center",y="bottom"}
     })
@@ -31,9 +35,14 @@ function home:init(parent)
         {0, h,    u0, v1,   1, 1, 1, 1 }
     }
     self.bg.mesh=lg.newMesh(vertices,"fan","static")
+    self.bg.mOpacity=1
+
+    self.bg.meshPrev=lg.newMesh(vertices,"fan","static")
+    self.bg.pOpacity=0
     self.bg.hidden=true
 
     self.bg.updateImage=function(self,img)
+        local prev=self.mesh:getTexture()
         local w,h=self.w,self.h
         local bw,bh=self.w,self.h
         if img then
@@ -59,8 +68,16 @@ function home:init(parent)
             {w, h,    u1, v1,   1, 1, 1, 1 },
             {0, h,    u0, v1,   1, 1, 1, 1 }
         }
+        
+
+        self.meshPrev:setVertices(vertices)
+        self.meshPrev:setTexture(prev)
+        self.pOpacity=1
+
         self.mesh:setVertices(vertices)
         self.mesh:setTexture(img)
+        self.mOpacity=0
+        timer.tween(0.3,self,{pOpacity=0,mOpacity=1},"out-cubic")
     end
 
     self.selected=ui.panel(0,0,300,60,parent,{
@@ -195,9 +212,8 @@ function home:init(parent)
                 se.selectedText:updateLayout()
                 se.selected:updateLayout()
                 sfx.nav:play()
-            end
-
-            se.bg:updateImage(self.items[self.data.selection+1].hero)
+                se.bg:updateImage(self.items[self.data.selection+1].hero)
+            end         
 
             if input:pressed("options") then
                 local s=require("ui.panels.gameSettings"):init(control,self.items[self.data.selection+1])
@@ -227,6 +243,7 @@ function home:init(parent)
         
         os.execute(c)
     end
+    self.bg:updateImage(self.selectionMenu.items[self.selectionMenu.data.selection+1].hero)
 
     return home
 end
